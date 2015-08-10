@@ -46,26 +46,29 @@ let __mouseHandlers = function({ speed }) {
         let rect = track.getBoundingClientRect();
         let clickPos = getPosition(evt);
 
-        let size = this.getSize();
-        let thumbSize = {
-            x: pickInRange(size.container.width / size.content.width, 0, 1),
-            y: pickInRange(size.container.height / size.content.height, 0, 1)
-        };
+        let { size, offset } = this;
+        let duration = 1e3 / speed;
 
-        let clickOffset = {
-            x: (clickPos.x - rect.left) / (rect.right - rect.left),
-            y: (clickPos.y - rect.top) / (rect.bottom - rect.top)
-        };
+        if (direction === 'x') {
+            // use percentage value
+            let thumbSize = pickInRange(size.container.width / size.content.width, 0, 1);
+            let clickOffset = (clickPos.x - rect.left) / size.container.width;
 
-        let destX = direction === 'x' ?
-                    (clickOffset.x - thumbSize.x / 2) * size.content.width :
-                    this.offset.x;
+            return this.scrollTo(
+                (clickOffset - thumbSize / 2) * size.content.width,
+                offset.y,
+                duration
+            );
+        }
 
-        let destY = direction === 'y' ?
-                    (clickOffset.y - thumbSize.y / 2) * size.content.height :
-                    this.offset.y;
+        let thumbSize = pickInRange(size.container.height / size.content.height, 0, 1);
+        let clickOffset = (clickPos.y - rect.top) / size.container.height;
 
-        this.scrollTo(destX, destY, 1e3 / speed);
+        this.scrollTo(
+            offset.x,
+            (clickOffset - thumbSize / 2) * size.content.height,
+            duration
+        );
     };
 
     // @delegate
@@ -94,19 +97,25 @@ let __mouseHandlers = function({ speed }) {
         isMouseMove = true;
         evt.preventDefault();
 
-        let size = this.getSize();
+        let { size, offset } = this;
         let cursorPos = getPosition(evt);
 
-        // get percentage of pointer position in track
-        // then tranform to px
-        let destX = (cursorPos.x - startOffsetToThumb.x - containerRect.left) / (containerRect.right - containerRect.left) * size.content.width;
-        let destY = (cursorPos.y - startOffsetToThumb.y - containerRect.top) / (containerRect.bottom - containerRect.top) * size.content.height;
+        if (startTrackDirection === 'x') {
+            // get percentage of pointer position in track
+            // then tranform to px
+            this.setPosition(
+                (cursorPos.x - startOffsetToThumb.x - containerRect.left) / (containerRect.right - containerRect.left) * size.content.width,
+                offset.y
+            );
 
-        destX = startTrackDirection === 'x' ? destX : this.offset.x;
-        destY = startTrackDirection === 'y' ? destY : this.offset.y;
+            return;
+        }
 
         // don't need easing
-        this.setPosition(destX, destY);
+        this.setPosition(
+            offset.x,
+            (cursorPos.y - startOffsetToThumb.y - containerRect.top) / (containerRect.bottom - containerRect.top) * size.content.height
+        );
     };
 
     let mouseupHandler = () => {

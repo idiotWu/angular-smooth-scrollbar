@@ -19,7 +19,7 @@ export let getPosition = (evt) => {
     let data = getPointerData(evt);
 
     return {
-        x: data.pageX,
-        y: data.pageY
+        x: data.clientX,
+        y: data.clientY
     };
 };
