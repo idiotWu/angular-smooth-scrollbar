@@ -44,7 +44,7 @@ To avoid repainting, I use `translate3d` in scroll content to create composite l
 
 ### Available Options
 
-- name(required): passed throught `scrollbar` attribute, determine the name for this scrollbar instance.
+- name**(required)**: passed through `scrollbar` attribute, determine the name for this scrollbar instance.
 - speed: scrolling speed, default is `1`.
 - stepLength: wheel scroll step length (px/delta), default is `50`.
 - easingDuration: swipe easing duration (ms), default is `1000`.
@@ -109,7 +109,7 @@ Remove the given listener from listeners list.
 
 ### instance#infiniteScroll( cb, threshold )
 
-This is another useful method when you want to make infinite scrolling. Callback will be invoked the first time you scroll to given threshold, then when you scrolling over threshold again.
+This is another useful method when you want to make infinite scrolling. Callback will be invoked the first time you scroll to given threshold, then when you scrolling over threshold again. Default threshold is 50(px).
 
 ## TODO: A better inertial scrolling algorithm
 

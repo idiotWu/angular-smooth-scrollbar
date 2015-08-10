@@ -27,8 +27,5 @@ build/Release
 node_modules
 bower_components
 
-# tests
-test
-
 # build file
 build
