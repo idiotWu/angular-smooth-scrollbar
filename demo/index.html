@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smooth Scrollbar</title>
+    <link rel="stylesheet" href="../dist/smooth_scrollbar.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body ng-app="demo">
+
+<main>
+    <h1>Angular Smooth Scrollbar</h1>
+    <h2>Smooth Scrolling with Hardware Acceleration</h2>
+
+    <article id="compare">
+        <h3>Native Scrolling Demo</h3>
+        <section class="scroll native">
+            <img src="your_diary.jpg" height="1080" width="1920">
+        </section>
+        <h3>Smooth Scrolling Demo</h3>
+        <section scrollbar="demo" class="scroll">
+            <img src="your_diary.jpg" height="1080" width="1920">
+        </section>
+    </article>
+
+    <article ng-controller="GetDataCtrl" id="get-data">
+        <h3>Get Data With 10x Infinite Scroll</h3>
+        <header>
+            <span>offset.x: {{offset.x.toFixed(2)}}</span>
+            <span>offset.y: {{offset.y.toFixed(2)}}</span>
+            <span>status: {{loading}}</span>
+        </header>
+        <section scrollbar="getData" class="scroll">
+            <img src="your_diary.jpg" height="1080" width="1920">
+            <div ng-repeat="paragraph in article track by $index">
+                <p ng-bind="paragraph"></p>
+            </div>
+        </section>
+    </article>
+</main>
+
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../dist/smooth_scrollbar.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
