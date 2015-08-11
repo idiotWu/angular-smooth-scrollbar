@@ -17,7 +17,7 @@
         var paragraphTmpl = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam, accusamus laudantium nostrum minima possimus optio voluptates id dignissimos, libero voluptas nesciunt. Consequatur deleniti corporis recusandae nesciunt. Maiores dignissimos praesentium tempore.';
         var article = $scope.article = [paragraphTmpl];
 
-        var lastTime;
+        var lastTime, mustRun;
 
         ScrollbarService.getInstance('getData', function(scrollbar) {
             $scope.offset = scrollbar.offset;
@@ -26,6 +26,14 @@
             scrollbar.addListener(function(status) {
                 var now = (new Date()).getTime();
                 lastTime = lastTime || now;
+
+                clearTimeout(mustRun);
+
+                mustRun = setTimeout(function() {
+                    $scope.$apply(function() {
+                        $scope.offset = status.offset;
+                    });
+                }, 300);
 
                 if (now - lastTime < 300) return;
 

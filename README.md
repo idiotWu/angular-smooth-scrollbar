@@ -83,11 +83,13 @@ Return the size of scrollbar container and scroll content, it may be something l
 }
 ```
 
-### instance#update()
+### instance#update( cb )
 
 Update the scrollbar right now. This will be useful when you modified scroll content.
 
 If you don't do this manually, scrollbar will be updated everytime you start scrolling (a rest(100ms) after continuous scrolling will terminate current scroll action, and when you start scrolling again, `update` will be called).
+
+Callback will be invoked with scroolbar instance after scrollbar updated.
 
 ### instance#setPosition( x, y )
 

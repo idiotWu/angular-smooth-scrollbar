@@ -49,7 +49,9 @@ let __keyboardHandler = function({ speed, stepLength }) {
         let destY = pickInRange(y * speed * stepLength + offset.y, 0, limit.y);
 
         // if has scrolled to edge
-        if (destX === offset.x && destY === offset.y) return;
+        if (destX === offset.x && destY === offset.y) {
+            return this.__updateThrottle();
+        }
 
         evt.preventDefault();
         evt.stopPropagation();

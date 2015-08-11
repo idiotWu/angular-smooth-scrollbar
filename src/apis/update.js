@@ -15,8 +15,10 @@ export { SmoothScrollbar };
  * @method
  * @api
  * Update scrollbars appearance in next animation frame
+ *
+ * @param {Function} cb: callback
  */
-SmoothScrollbar.prototype.update = function() {
+SmoothScrollbar.prototype.update = function(cb) {
     requestAnimationFrame(() => {
         let size = this.size = this.getSize();
         let newLimit = {
@@ -51,5 +53,7 @@ SmoothScrollbar.prototype.update = function() {
         );
 
         this.__setThumbPosition();
+
+        if (typeof cb === 'function') cb(this);
     });
 };

@@ -85,7 +85,9 @@ let __touchHandlers = function({ easingDuration }) {
         let destY = pickInRange(lastY - curY + offset.y, 0, limit.y);
 
         if ((Math.abs(destX - offset.x) < 1 && destY === offset.y) ||
-            (Math.abs(destY - offset.y) < 1 && destX === offset.x)) return;
+            (Math.abs(destY - offset.y) < 1 && destX === offset.x)) {
+            return this.__updateThrottle();
+        }
 
         evt.preventDefault();
         evt.stopPropagation();
