@@ -20,18 +20,9 @@ export { SmoothScrollbar };
  * @return {Function}: event handler
  */
 let __wheelHandler = function({ speed, stepLength }) {
-    let lastScrollTime;
-
-    let resetDelay = throttle(() => { lastScrollTime = undefined; });
-
     return (evt) => {
-        resetDelay();
-
         let { offset, limit } = this;
         let { x, y } = getDelta(evt);
-        let now = (new Date()).getTime();
-        let duration = lastScrollTime ? (now - lastScrollTime) : 0;
-        lastScrollTime = now;
 
         let destX = pickInRange(x * speed * stepLength + offset.x, 0, limit.x);
         let destY = pickInRange(y * speed * stepLength + offset.y, 0, limit.y);
@@ -42,7 +33,9 @@ let __wheelHandler = function({ speed, stepLength }) {
         evt.preventDefault();
         evt.stopPropagation();
 
-        this.scrollTo(destX, destY, duration * 10 / speed);
+        let duration = 300 * Math.sqrt(Math.max(Math.abs(x), Math.abs(y)));
+
+        this.scrollTo(destX, destY, duration / speed);
     };
 };
 

@@ -8,7 +8,7 @@ import { getOriginalEvent } from './get_original_event';
 
 const DELTA_SCALE = {
     STANDARD: -120,
-    MOZ: 20
+    MOZ: 3
 };
 
 /**
@@ -17,7 +17,7 @@ const DELTA_SCALE = {
  * In IE and Chrome, wheel delta is 120/-120 per native wheel event,
  * negative value for scrolling down
  *
- * But in firefox, wheel delta -20/20, negative value for scrolling up
+ * But in firefox, wheel delta -3/3, negative value for scrolling up
  *
  * Old Opera and others? I don't care!
  *

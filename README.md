@@ -46,9 +46,9 @@ To avoid repainting, I use `translate3d` in scroll content to create composite l
 
 - name**(required)**: passed through `scrollbar` attribute, determine the name for this scrollbar instance.
 - speed: scrolling speed, default is `1`.
-- stepLength: wheel scroll step length (px/delta), default is `50`.
-- easingDuration: swipe easing duration (ms), default is `1000`.
-- easingCurve: cubic bezier easing function, you can use either css `timing-function` or pre-defined curves [here](http://easings.net/en), default is `easeOutCubic`.
+- stepLength: wheel scroll step length(px/delta), default is `100`.
+- easingDuration: swipe easing duration(ms), default is `1000`.
+- easingCurve: cubic bezier easing function, you can use either css `timing-function` or pre-defined curves [here](http://easings.net/en), default is `cubic-bezier(0.1, 0.57, 0.1, 1)`.
 
 ## ScrollbarService
 

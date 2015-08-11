@@ -46,7 +46,7 @@ const EASING_CURVES = {
  * @return {Function} easing function
  */
 let bezierBuilder = (str) => {
-    let defaultCurve = EASING_CURVES[DEFAULT_OPTIONS.EASING_CURVE];
+    str = str || DEFAULT_OPTIONS.EASING_CURVE;
 
     if (CSS_TIMING_FUNCTIONS.indexOf(str) !== -1) {
         return BezierEasing[str.replace(/\-[a-z]/g, (m) => m[1].toUpperCase())];
@@ -61,7 +61,7 @@ let bezierBuilder = (str) => {
         return new BezierEasing(...easingCurve.map((v) => parseFloat(v)));
     }
 
-    return new BezierEasing(...defaultCurve);
+    return BezierEasing.linear;
 };
 
 /**

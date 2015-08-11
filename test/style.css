@@ -31,6 +31,7 @@ h3 {
 
 .scroll.native {
   overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .scroll img,
