@@ -57,6 +57,9 @@ export class SmoothScrollbar {
             },
             __updateThrottle: {
                 value: throttle(::this.update)
+            },
+            __scrollAnimation: {
+                writable: true
             }
         });
 

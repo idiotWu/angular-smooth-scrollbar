@@ -19,7 +19,7 @@ export { SmoothScrollbar };
  * @param {Number} [y]: scrollbar position in y axis
  */
 SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.offset.y) {
-    cancelAnimationFrame(this.scrollAnimation);
+    cancelAnimationFrame(this.__scrollAnimation);
 
     let status = {};
     let { offset, limit, $target, __listeners } = this;
