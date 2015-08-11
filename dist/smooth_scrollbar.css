@@ -1,3 +1,8 @@
+[scrollbar] .scroll-content,
+[scrollbar] .scrollbar-thumb {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);
+}
 [scrollbar] {
   position: relative;
   overflow: hidden;
