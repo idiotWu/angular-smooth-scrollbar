@@ -50,10 +50,19 @@ SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.off
         x: limit.x,
         y: limit.y
     };
-    status.velocity = {
-        x: (x - offset.x) / duration,
-        y: (y - offset.y) / duration
-    };
+
+    if (duration) {
+        status.velocity = {
+            x: (x - offset.x) / duration,
+            y: (y - offset.y) / duration
+        };
+    } else {
+        status.velocity = {
+            x: 0,
+            y: 0
+        };
+    }
+
     status.offset = this.offset = { x, y };
 
     // reset thumb position after offset update

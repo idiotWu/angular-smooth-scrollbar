@@ -13,13 +13,13 @@ const RESET_DELAY = 100;
  *
  * @return {Function}
  */
-export let throttle = (fn, delay = RESET_DELAY) => {
+export let throttle = (fn, runInBegin = true, delay = RESET_DELAY) => {
     if (typeof fn !== 'function') return;
 
     let timer;
 
     return (...args) => {
-        if (!timer) {
+        if (!timer && runInBegin) {
             setTimeout(() => fn(...args));
         }
 
@@ -27,6 +27,7 @@ export let throttle = (fn, delay = RESET_DELAY) => {
 
         timer = setTimeout(() => {
             timer = undefined;
+            if (!runInBegin) fn(...args);
         }, delay);
     };
 };

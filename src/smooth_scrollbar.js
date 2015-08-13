@@ -65,7 +65,7 @@ export class SmoothScrollbar {
                 writable: true
             },
             __resetScrollTime: {
-               value: throttle(() => { this.__lastScrollTime = undefined; })
+               value: throttle(() => { this.__lastScrollTime = undefined; }, false, 100)
             }
         });
 
