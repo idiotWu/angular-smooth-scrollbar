@@ -20,11 +20,11 @@ export { SmoothScrollbar };
  */
 SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.offset.y) {
     cancelAnimationFrame(this.__scrollAnimation);
+    this.__resetScrollTime();
+    this.__updateThrottle();
 
     let status = {};
     let { offset, limit, $target, __listeners } = this;
-
-    this.__updateThrottle();
 
     if (Math.abs(x - offset.x) > 1) this.showTrack('x');
     if (Math.abs(y - offset.y) > 1) this.showTrack('y');
@@ -34,6 +34,14 @@ SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.off
 
     if (x === offset.x && y === offset.y) return;
 
+    let now = (new Date()).getTime();
+    let lastTime = this.__lastScrollTime;
+
+    if (!lastTime) lastTime = this.__lastScrollTime = now;
+
+    let duration = now - lastTime;
+    this.__lastScrollTime = now;
+
     status.direction = {
         x: x === offset.x ? 'none' : (x > offset.x ? 'right' : 'left'),
         y: y === offset.y ? 'none' : (y > offset.y ? 'down' : 'up')
@@ -41,6 +49,10 @@ SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.off
     status.limit = {
         x: limit.x,
         y: limit.y
+    };
+    status.velocity = {
+        x: (x - offset.x) / duration,
+        y: (y - offset.y) / duration
     };
     status.offset = this.offset = { x, y };
 

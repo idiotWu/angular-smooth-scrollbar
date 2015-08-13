@@ -60,6 +60,12 @@ export class SmoothScrollbar {
             },
             __scrollAnimation: {
                 writable: true
+            },
+            __lastScrollTime: {
+                writable: true
+            },
+            __resetScrollTime: {
+               value: throttle(() => { this.__lastScrollTime = undefined; })
             }
         });
 

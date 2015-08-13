@@ -12,6 +12,10 @@
             x: 0,
             y: 0
         };
+        $scope.velocity = {
+            x: 0,
+            y: 0
+        };
 
         $scope.loading = 'pending...';
         var paragraphTmpl = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam, accusamus laudantium nostrum minima possimus optio voluptates id dignissimos, libero voluptas nesciunt. Consequatur deleniti corporis recusandae nesciunt. Maiores dignissimos praesentium tempore.';
@@ -32,6 +36,7 @@
                 mustRun = setTimeout(function() {
                     $scope.$apply(function() {
                         $scope.offset = status.offset;
+                        $scope.velocity = status.velocity;
                     });
                 }, 300);
 
@@ -40,6 +45,7 @@
                 lastTime = now;
                 $scope.$apply(function() {
                     $scope.offset = status.offset;
+                    $scope.velocity = status.velocity;
                 });
             });
 
