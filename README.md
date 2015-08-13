@@ -103,6 +103,28 @@ When you want to scroll content to position with easing animation, use this meth
 
 Register scrolling listener to scrollbar instance, callback will be invoked in every small scrolling.
 
+A status object is passed through callback with three properties:
+
+```javascript
+{
+    direction: {
+        // scrolling direction
+        x: 'none' | 'right' | 'left',
+        y: 'none' | 'up' | 'down'
+    },
+    limit: {
+        // max scroll distance(px)
+        x: 1000,
+        y: 200
+    },
+    velocity: {
+        // scrolling velocity(px/ms)
+        x: 0.01,
+        y: 0.97
+    }
+}
+```
+
 **Be careful not to add time consuming listeners that will slow down scrolling.**
 
 ### instance#removeListener( fn )
@@ -115,6 +137,6 @@ This is another useful method when you want to make infinite scrolling. Callback
 
 ## TODO: A better inertial scrolling algorithm
 
-Smooth scrollbar will calculate you touch moving speed, and scroll to a distance of `speed * easingDuration` more when you stop. This algorithm is not same as what the inertial scrolling is in mobile devices.
+Smooth scrollbar will calculate you touch moving velocity, and scroll to a distance of `velocity * easingDuration` more when you stop. This algorithm is not same as what the inertial scrolling is in mobile devices.
 
 I've tried using uniformly accelerated motion, but it worked so bad that i have to use `cubic-bezier` easing. If any one has an idea about this, please create an issue or make a pull request, thx.
