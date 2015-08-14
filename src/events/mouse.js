@@ -88,7 +88,7 @@ let __mouseHandlers = function({ speed }) {
         };
 
         // container bounding rectangle
-        containerRect = this.$target.container[0].getBoundingClientRect();
+        containerRect = this.target.container.getBoundingClientRect();
     };
 
     let mousemoveHandler = (evt) => {

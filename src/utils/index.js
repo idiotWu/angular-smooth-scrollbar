@@ -1,4 +1,5 @@
 export * from './throttle';
+export * from './set_style';
 export * from './get_delta';
 export * from './find_child';
 export * from './get_touch_id';

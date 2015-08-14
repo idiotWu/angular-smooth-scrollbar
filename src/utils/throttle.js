@@ -10,6 +10,7 @@ const RESET_DELAY = 100;
  * Call fn if it isn't be called in a period
  *
  * @param {Function} fn
+ * @param {Boolean} runInBegin: if set to `true`, callback will be fired at every period begin, otherwise at end.
  *
  * @return {Function}
  */

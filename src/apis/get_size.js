@@ -16,8 +16,8 @@ export { SmoothScrollbar };
  * @return {Object}: an object contains container and content's width and height
  */
 SmoothScrollbar.prototype.getSize = function() {
-    let container = this.$target.container[0];
-    let content = this.$target.content[0];
+    let container = this.target.container;
+    let content = this.target.content;
 
     return {
         container: {

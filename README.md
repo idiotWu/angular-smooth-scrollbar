@@ -103,7 +103,7 @@ When you want to scroll content to position with easing animation, use this meth
 
 Register scrolling listener to scrollbar instance, callback will be invoked in every small scrolling.
 
-A status object is passed through callback with three properties:
+A status object is passed through callback with following properties:
 
 ```javascript
 {
@@ -111,6 +111,11 @@ A status object is passed through callback with three properties:
         // scrolling direction
         x: 'none' | 'right' | 'left',
         y: 'none' | 'up' | 'down'
+    },
+    offset: {
+        // scroll offset
+        x: 100,
+        y: 0
     },
     limit: {
         // max scroll distance(px)
@@ -135,8 +140,12 @@ Remove the given listener from listeners list.
 
 This is another useful method when you want to make infinite scrolling. Callback will be invoked the first time you scroll to given threshold, then when you scrolling over threshold again. Default threshold is 50(px).
 
-## TODO: A better inertial scrolling algorithm
+## TODO
+
+### 1. A better inertial scrolling algorithm
 
 Smooth scrollbar will calculate you touch moving velocity, and scroll to a distance of `velocity * easingDuration` more when you stop. This algorithm is not same as what the inertial scrolling is in mobile devices.
 
 I've tried using uniformly accelerated motion, but it worked so bad that i have to use `cubic-bezier` easing. If any one has an idea about this, please create an issue or make a pull request, thx.
+
+### 2. SmoothScrollbar for non-angular project

@@ -1,12 +1,12 @@
 /**
  * @module
  * @prototype {Function} update
- * @dependencies [ SmoothScrollbar, #getSize, #__setThumbPosition, pickInRange ]
+ * @dependencies [ SmoothScrollbar, #getSize, #__setThumbPosition, pickInRange, setStyle ]
  */
 
 import './get_size';
 import '../internals/set_thumb_position';
-import { pickInRange } from '../utils/index';
+import { pickInRange, setStyle } from '../utils/index';
 import { SmoothScrollbar } from '../smooth_scrollbar';
 
 export { SmoothScrollbar };
@@ -32,25 +32,23 @@ SmoothScrollbar.prototype.update = function(cb) {
 
         this.limit = newLimit;
 
+        let { xAxis, yAxis } = this.target;
+
         // hide scrollbar if content size less than container
-        this.$target.xAxis.track.css(
-            'display',
-            size.content.width <= size.container.width ? 'none' : 'block'
-        );
-        this.$target.yAxis.track.css(
-            'display',
-            size.content.height <= size.container.height ? 'none' : 'block'
-        );
+        setStyle(xAxis.track, {
+            'display': size.content.width <= size.container.width ? 'none' : 'block'
+        });
+        setStyle(yAxis.track, {
+            'display': size.content.height <= size.container.height ? 'none' : 'block'
+        });
 
         // use percentage value for thumb
-        this.$target.xAxis.thumb.css(
-            'width',
-            `${pickInRange(size.container.width / size.content.width, 0, 1) * 100}%`
-        );
-        this.$target.yAxis.thumb.css(
-            'height',
-            `${pickInRange(size.container.height / size.content.height, 0, 1) * 100}%`
-        );
+        setStyle(xAxis.thumb, {
+            'width': `${pickInRange(size.container.width / size.content.width, 0, 1) * 100}%`
+        });
+        setStyle(yAxis.thumb, {
+            'height': `${pickInRange(size.container.height / size.content.height, 0, 1) * 100}%`
+        });
 
         this.__setThumbPosition();
 

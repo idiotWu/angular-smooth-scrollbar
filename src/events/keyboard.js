@@ -29,9 +29,10 @@ const KEYMAPS = {
  */
 let __keyboardHandler = function({ speed, stepLength }) {
     let isHovered;
+    let { container } = this.target;
 
-    this.$target.container.on('mouseenter', () => isHovered = true);
-    this.$target.container.on('mouseleave', () => isHovered = false);
+    container.addEventListener('mouseenter', () => isHovered = true);
+    container.addEventListener('mouseleave', () => isHovered = false);
 
     return (evt) => {
         if (!isHovered) return;

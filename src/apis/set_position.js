@@ -1,11 +1,11 @@
 /**
  * @module
  * @prototype {Function} setPosition
- * @dependencies [ SmoothScrollbar, #__updateThrottle, #__setThumbPosition, pickInRange ]
+ * @dependencies [ SmoothScrollbar, #__updateThrottle, #__setThumbPosition, pickInRange, setStyle ]
  */
 
 import '../internals/set_thumb_position';
-import { pickInRange } from '../utils/index';
+import { pickInRange, setStyle } from '../utils/index';
 import { SmoothScrollbar } from '../smooth_scrollbar';
 
 export { SmoothScrollbar };
@@ -24,13 +24,15 @@ SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.off
     this.__updateThrottle();
 
     let status = {};
-    let { offset, limit, $target, __listeners } = this;
+    let { offset, limit, target, __listeners } = this;
 
     if (Math.abs(x - offset.x) > 1) this.showTrack('x');
     if (Math.abs(y - offset.y) > 1) this.showTrack('y');
 
     x = pickInRange(x, 0, limit.x);
     y = pickInRange(y, 0, limit.y);
+
+    this.hideTrack();
 
     if (x === offset.x && y === offset.y) return;
 
@@ -39,7 +41,7 @@ SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.off
 
     if (!lastTime) lastTime = this.__lastScrollTime = now;
 
-    let duration = now - lastTime;
+    let duration = (now - lastTime) || 1;
     this.__lastScrollTime = now;
 
     status.direction = {
@@ -51,17 +53,10 @@ SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.off
         y: limit.y
     };
 
-    if (duration) {
-        status.velocity = {
-            x: (x - offset.x) / duration,
-            y: (y - offset.y) / duration
-        };
-    } else {
-        status.velocity = {
-            x: 0,
-            y: 0
-        };
-    }
+    status.velocity = {
+        x: (x - offset.x) / duration,
+        y: (y - offset.y) / duration
+    };
 
     status.offset = this.offset = { x, y };
 
@@ -70,12 +65,10 @@ SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.off
 
     let style = `translate3d(${-x}px, ${-y}px, 0)`;
 
-    $target.content.css({
+    setStyle(target.content, {
         '-webkit-transform': style,
         'transform': style
     });
-
-    this.hideTrack();
 
     // invoke all listeners
     // don't need async calls

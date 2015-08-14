@@ -106,7 +106,7 @@ angular.module('SmoothScrollbar', [])
                 // rebuild instance
                 ScrollbarService.destroyInstance(scope.name);
 
-                ScrollbarService.createInstance(name, elem, {
+                ScrollbarService.createInstance(name, elem[0], {
                     speed,
                     stepLength,
                     easingDuration,
