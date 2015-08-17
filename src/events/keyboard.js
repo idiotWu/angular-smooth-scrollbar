@@ -28,14 +28,17 @@ const KEYMAPS = {
  * @return {Function}: event handler
  */
 let __keyboardHandler = function({ speed, stepLength }) {
-    let isHovered;
+    let isFocused;
     let { container } = this.target;
 
-    container.addEventListener('mouseenter', () => isHovered = true);
-    container.addEventListener('mouseleave', () => isHovered = false);
+    container.addEventListener('mousedown', (evt) => {
+        evt.stopPropagation();
+        isFocused = true;
+    });
+    document.addEventListener('mousedown', () => isFocused = false);
 
     return (evt) => {
-        if (!isHovered) return;
+        if (!isFocused) return;
 
         evt = getOriginalEvent(evt);
 
@@ -50,7 +53,7 @@ let __keyboardHandler = function({ speed, stepLength }) {
         let destY = pickInRange(y * speed * stepLength + offset.y, 0, limit.y);
 
         // if has scrolled to edge
-        if (destX === offset.x && destY === offset.y) {
+        if (Math.abs(destX - offset.x) < 1 && Math.abs(destY - offset.y) < 1) {
             return this.__updateThrottle();
         }
 

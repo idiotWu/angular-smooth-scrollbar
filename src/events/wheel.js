@@ -27,8 +27,7 @@ let __wheelHandler = function({ speed, stepLength }) {
         let destX = pickInRange(x * speed * stepLength + offset.x, 0, limit.x);
         let destY = pickInRange(y * speed * stepLength + offset.y, 0, limit.y);
 
-        if ((Math.abs(destX - offset.x) < 1 && destY === offset.y) ||
-            (Math.abs(destY - offset.y) < 1 && destX === offset.x)) {
+        if (Math.abs(destX - offset.x) < 1 && Math.abs(destY - offset.y) < 1) {
             return this.__updateThrottle();
         }
 
