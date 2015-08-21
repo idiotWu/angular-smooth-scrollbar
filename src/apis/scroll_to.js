@@ -18,8 +18,9 @@ export { SmoothScrollbar };
  * @param {Number} [x]: scrollbar position in x axis
  * @param {Number} [y]: scrollbar position in y axis
  * @param {Number} [duration]: transition duration
+ * @param {Function} [cb]: callback
  */
-SmoothScrollbar.prototype.scrollTo = function(x = this.offset.x, y = this.offset.y, duration = 0) {
+SmoothScrollbar.prototype.scrollTo = function(x = this.offset.x, y = this.offset.y, duration = 0, cb = null) {
     let { offset, limit } = this;
     let destX = pickInRange(x, 0, limit.x);
     let destY = pickInRange(y, 0, limit.y);
@@ -35,9 +36,8 @@ SmoothScrollbar.prototype.scrollTo = function(x = this.offset.x, y = this.offset
 
     let scroll = () => {
         if (i === length) {
-            return this.update();
+            return typeof cb === 'function' && cb(this);
         }
-
 
         this.setPosition(frames.x[i], frames.y[i]);
 
