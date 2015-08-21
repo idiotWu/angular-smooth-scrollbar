@@ -24,6 +24,7 @@
         var lastTime, mustRun;
 
         ScrollbarService.getInstance('getData', function(scrollbar) {
+            console.log(scrollbar)
             $scope.offset = scrollbar.offset;
             $scope.$apply();
 

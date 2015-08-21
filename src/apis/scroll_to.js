@@ -34,7 +34,9 @@ SmoothScrollbar.prototype.scrollTo = function(x = this.offset.x, y = this.offset
     let i = 0, length = frames.x.length;
 
     let scroll = () => {
-        if (i === length) return;
+        if (i === length) {
+            return this.update();
+        }
 
 
         this.setPosition(frames.x[i], frames.y[i]);
