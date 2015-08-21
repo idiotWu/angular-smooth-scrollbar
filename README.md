@@ -91,6 +91,10 @@ If you don't do this manually, scrollbar will be updated everytime you start scr
 
 Callback will be invoked with scroolbar instance after scrollbar updated.
 
+### instance#destroy()
+
+Remove all event listeners on scrollbar instance, but won't remove elements on document.
+
 ### instance#setPosition( x, y )
 
 This method behaves like DOM method `element.scrollTo`, scroll content will be set to the given position without transition.
