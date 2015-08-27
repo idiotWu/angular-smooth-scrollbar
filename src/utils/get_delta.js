@@ -20,15 +20,23 @@ export let getDelta = (evt) => {
     // get original DOM event
     evt = getOriginalEvent(evt);
 
-    if ('deltaMode' in evt) {
+    if ('deltaX' in evt) {
         return {
             x: evt.deltaX / DELTA_SCALE.STANDARD,
             y: evt.deltaY / DELTA_SCALE.STANDARD
         };
     }
 
+    if ('wheelDeltaX' in evt) {
+        return {
+            x: evt.wheelDeltaX / DELTA_SCALE.OTHERS,
+            y: evt.wheelDeltaY / DELTA_SCALE.OTHERS
+        };
+    }
+
+    // ie with touchpad
     return {
-        x: evt.wheelDeltaX / DELTA_SCALE.OTHERS,
-        y: evt.wheelDeltaY / DELTA_SCALE.OTHERS
+        x: 0,
+        y: evt.wheelDelta / DELTA_SCALE.OTHERS
     };
 };
