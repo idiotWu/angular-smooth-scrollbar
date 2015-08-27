@@ -99,9 +99,9 @@ Remove all event listeners on scrollbar instance, but won't remove elements on d
 
 This method behaves like DOM method `element.scrollTo`, scroll content will be set to the given position without transition.
 
-### instance#scrollTo( x, y, duration )
+### instance#scrollTo( x, y, duration, cb )
 
-When you want to scroll content to position with easing animation, use this method.
+When you want to scroll content to position with easing animation, use this method. Callback will be invoked when scrolling is over.
 
 ### instance#addListener( cb )
 
