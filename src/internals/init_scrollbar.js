@@ -9,8 +9,8 @@ import { SmoothScrollbar } from '../smooth_scrollbar';
 
 export { SmoothScrollbar };
 
-// is `mousewheel` event supported check
-const WHEEL_EVENT = 'onmousewheel' in document.documentElement ? 'mousewheel' : 'wheel';
+// is standard `wheel` event supported check
+const WHEEL_EVENT = typeof WheelEvent === 'undefined' ? 'mousewheel' : 'wheel';
 
 /**
  * @method
