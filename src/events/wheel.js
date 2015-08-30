@@ -34,7 +34,7 @@ let __wheelHandler = function({ speed, stepLength }) {
         evt.preventDefault();
         evt.stopPropagation();
 
-        let duration = 300 * Math.sqrt(Math.max(Math.abs(x), Math.abs(y)));
+        let duration = 120 * Math.sqrt(Math.max(Math.abs(x), Math.abs(y)));
 
         this.scrollTo(destX, destY, duration / speed);
     };

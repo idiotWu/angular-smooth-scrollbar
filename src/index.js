@@ -41,17 +41,17 @@ angular.module('SmoothScrollbar', [])
          * Create scrollbar instance
          *
          * @param {String} name: scrollbar name
-         * @param {jQuery} $elem: jQuery wrapped container element
+         * @param {Element} elem: container element
          * @param {Object} options: as is explained in scrollbar constructor
          */
-        createInstance(name, $elem, options) {
+        createInstance(name, elem, options) {
             let { scrollbarInstances, deferreds } = this;
 
             if (scrollbarInstances.hasOwnProperty(name)) {
                 return scrollbarInstances[name];
             }
 
-            let instance = scrollbarInstances[name] = new SmoothScrollbar($elem, options);
+            let instance = scrollbarInstances[name] = new SmoothScrollbar(elem, options);
 
             if (deferreds.hasOwnProperty(name)) {
                 // invoke delaied callbacks

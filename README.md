@@ -46,7 +46,7 @@ To avoid repainting, I use `translate3d` in scroll content to create composite l
 
 - name**(required)**: passed through `scrollbar` attribute, determine the name for this scrollbar instance.
 - speed: scrolling speed, default is `1`.
-- stepLength: wheel scroll step length(px/delta), default is `100`.
+- stepLength: wheel scroll step length(px/delta), default is `40`.
 - easingDuration: swipe easing duration(ms), default is `1000`.
 - easingCurve: cubic bezier easing function, you can use either css `timing-function` or pre-defined curves [here](http://easings.net/en), default is `cubic-bezier(0.1, 0.57, 0.1, 1)`.
 
@@ -56,7 +56,7 @@ You can access your scrollbar instances through `ScrollbarService`.
 
 ### ScrollbarService.getInstance( name, cb )
 
-Get scrollbar instance by giving the name, and instance is passed through callback function. If the named instance is already existed, callback will be invoked as soon as possible, otherwise callback will not be called until that instance is create.
+Get scrollbar instance by giving the name, and instance is passed through callback function. If the named instance is already existed, callback will be invoked as soon as possible, otherwise callback will not be called until that instance is created.
 
 ### ScrollbarService.destroyInstance( name )
 
