@@ -10,17 +10,20 @@ const RESET_DELAY = 100;
  * Call fn if it isn't be called in a period
  *
  * @param {Function} fn
- * @param {Boolean} runInBegin: if set to `true`, callback will be fired at every period begin, otherwise at end.
+ * @param {Object} [options]: options includes three available params:
+ *                            [delay]: throttle delay
+ *                            [leading]: whether run in beginnig
+ *                            [tailing]: whether run in ending
  *
  * @return {Function}
  */
-export let throttle = (fn, runInBegin = true, delay = RESET_DELAY) => {
+export let throttle = (fn, { delay = RESET_DELAY, leading = true, tailing = true } = {}) => {
     if (typeof fn !== 'function') return;
 
     let timer;
 
     return (...args) => {
-        if (!timer && runInBegin) {
+        if (!timer && leading) {
             setTimeout(() => fn(...args));
         }
 
@@ -28,7 +31,7 @@ export let throttle = (fn, runInBegin = true, delay = RESET_DELAY) => {
 
         timer = setTimeout(() => {
             timer = undefined;
-            if (!runInBegin) fn(...args);
+            if (tailing) fn(...args);
         }, delay);
     };
 };
