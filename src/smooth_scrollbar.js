@@ -1,10 +1,10 @@
 /**
  * @module
  * @export {Class} SmoothScrollbar
- * @dependencies [ DEFAULT_OPTIONS, motionBuilder, throttle, findChild ]
+ * @dependencies [ DEFAULT_OPTIONS, motionBuilder, debounce, findChild ]
  */
 
-import { motionBuilder, throttle, findChild } from './utils/index';
+import { motionBuilder, debounce, findChild } from './utils/index';
 import { DEFAULT_OPTIONS } from './options';
 
 /**
@@ -53,7 +53,7 @@ export class SmoothScrollbar {
                 value: motionBuilder(easingCurve)
             },
             __updateThrottle: {
-                value: throttle(::this.update)
+                value: debounce(::this.update)
             },
             __scrollAnimation: {
                 writable: true
@@ -62,7 +62,7 @@ export class SmoothScrollbar {
                 writable: true
             },
             __resetScrollTime: {
-               value: throttle(() => { this.__lastScrollTime = undefined; }, { leading: false, duration: 100 })
+               value: debounce(() => { this.__lastScrollTime = undefined; }, { leading: false, duration: 100 })
             }
         });
 
@@ -83,7 +83,7 @@ export class SmoothScrollbar {
             }
         };
 
-        this.hideTrack = throttle(() => {
+        this.hideTrack = debounce(() => {
             trackX.classList.remove('show');
             trackY.classList.remove('show');
         }, false, 1e3);

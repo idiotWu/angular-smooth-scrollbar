@@ -1,4 +1,4 @@
-export * from './throttle';
+export * from './debounce';
 export * from './set_style';
 export * from './get_delta';
 export * from './find_child';

@@ -1,9 +1,9 @@
 /**
  * @module
- * @export {Function} throttle
+ * @export {Function} debounce
  */
 
-// throttle timers reset delay
+// debounce timers reset delay
 const RESET_DELAY = 100;
 
 /**
@@ -11,13 +11,13 @@ const RESET_DELAY = 100;
  *
  * @param {Function} fn
  * @param {Object} [options]: options includes three available params:
- *                            [delay]: throttle delay
+ *                            [delay]: debounce delay
  *                            [leading]: whether run in beginnig
  *                            [tailing]: whether run in ending
  *
  * @return {Function}
  */
-export let throttle = (fn, { delay = RESET_DELAY, leading = true, tailing = true } = {}) => {
+export let debounce = (fn, { delay = RESET_DELAY, leading = true, tailing = true } = {}) => {
     if (typeof fn !== 'function') return;
 
     let timer;
