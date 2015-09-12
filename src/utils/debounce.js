@@ -13,11 +13,11 @@ const RESET_DELAY = 100;
  * @param {Object} [options]: options includes three available params:
  *                            [delay]: debounce delay
  *                            [leading]: whether run in beginnig
- *                            [tailing]: whether run in ending
+ *                            [trailing]: whether run in ending
  *
  * @return {Function}
  */
-export let debounce = (fn, { delay = RESET_DELAY, leading = true, tailing = true } = {}) => {
+export let debounce = (fn, { delay = RESET_DELAY, leading = true, trailing = true } = {}) => {
     if (typeof fn !== 'function') return;
 
     let timer;
