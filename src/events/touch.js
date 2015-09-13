@@ -34,13 +34,7 @@ let __touchHandlers = function({ easingDuration }) {
 
             let touch = touchList[key];
 
-            touchRecords[touch.identifier] = {
-                pos: {
-                    x: touch.pageX,
-                    y: touch.pageY
-                },
-                time: (new Date()).getTime()
-            };
+            touchRecords[touch.identifier] = getPosition(touch);
         });
     };
 
@@ -65,8 +59,8 @@ let __touchHandlers = function({ easingDuration }) {
             lastTouchID = touchID;
 
             // don't need error handler
-            lastTouchPos = touchRecords[touchID].pos;
-            lastTouchTime = touchRecords[touchID].time;
+            lastTouchPos = touchRecords[touchID];
+            lastTouchTime = (new Date()).getTime();
         } else if (touchID !== lastTouchID) {
             // prevent multi-touch bouncing
             return;
@@ -77,6 +71,8 @@ let __touchHandlers = function({ easingDuration }) {
         let duration = (new Date()).getTime() - lastTouchTime;
         let { x: lastX, y: lastY } = lastTouchPos;
         let { x: curX, y: curY } = lastTouchPos = getPosition(evt);
+
+        duration = duration || 1; // fix Infinity error
 
         moveVelocity.x = (lastX - curX) / duration;
         moveVelocity.y = (lastY - curY) / duration;
@@ -95,7 +91,7 @@ let __touchHandlers = function({ easingDuration }) {
         this.setPosition(destX, destY);
     };
 
-    let endHandler = () => {
+    let endHandler = (evt) => {
         // release current touch
         delete touchRecords[lastTouchID];
         lastTouchID = undefined;

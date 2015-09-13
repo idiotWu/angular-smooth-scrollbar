@@ -31,7 +31,7 @@ export let debounce = (fn, { delay = RESET_DELAY, leading = true, trailing = tru
 
         timer = setTimeout(() => {
             timer = undefined;
-            if (tailing) fn(...args);
+            if (trailing) fn(...args);
         }, delay);
     };
 };
