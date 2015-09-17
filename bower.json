@@ -27,7 +27,6 @@
     "tests"
   ],
   "dependencies": {
-    "bezier-easing": "gre/bezier-easing",
     "angular": "~1.4.3"
   }
 }

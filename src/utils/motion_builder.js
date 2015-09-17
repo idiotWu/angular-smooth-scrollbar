@@ -4,8 +4,8 @@
  * @dependencies [ DEFAULT_OPTIONS, BezierEasing ]
  */
 
+import BezierEasing from 'bezier-easing';
 import { DEFAULT_OPTIONS } from '../options';
-import BezierEasing from '../../bower_components/bezier-easing/index';
 
 // prefer using TypedArray to improve performance
 const ARRAY_CONSTRUCTOR = typeof Float32Array === 'function' ? Float32Array : Array;
