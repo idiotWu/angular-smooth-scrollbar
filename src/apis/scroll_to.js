@@ -46,5 +46,5 @@ SmoothScrollbar.prototype.scrollTo = function(x = this.offset.x, y = this.offset
         this.__scrollAnimation = requestAnimationFrame(scroll);
     };
 
-    requestAnimationFrame(scroll);
+    this.__scrollAnimation = requestAnimationFrame(scroll);
 };
