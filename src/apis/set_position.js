@@ -18,16 +18,13 @@ export { SmoothScrollbar };
  * @param {Number} [x]: scrollbar position in x axis
  * @param {Number} [y]: scrollbar position in y axis
  */
-SmoothScrollbar.prototype.setPosition = function(x, y) {
+SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.offset.y) {
     cancelAnimationFrame(this.__scrollAnimation);
     this.__resetScrollTime();
     this.__updateThrottle();
 
     let status = {};
     let { offset, limit, target, __listeners } = this;
-
-    x = x || offset.x;
-    y = y || offset.y;
 
     if (Math.abs(x - offset.x) > 1) this.showTrack('x');
     if (Math.abs(y - offset.y) > 1) this.showTrack('y');
