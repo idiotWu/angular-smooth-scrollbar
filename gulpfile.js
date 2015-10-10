@@ -51,9 +51,15 @@ var compile = function(watch, done) {
     });
 };
 
-gulp.task('scripts:build', function(done) {
+gulp.task('scripts:watch', function(done) {
     return gulp.src('src/index.js')
         .pipe(compile(true, done))
+        .pipe(gulp.dest('build/'));
+});
+
+gulp.task('scripts:build', function() {
+    return gulp.src('src/index.js')
+        .pipe(compile(false))
         .pipe(gulp.dest('build/'));
 });
 
@@ -65,14 +71,14 @@ gulp.task('styles:build', function() {
         .pipe(browserSync.stream());
 });
 
-gulp.task('scripts:release', function() {
+gulp.task('scripts:release', ['scripts:build'], function() {
     return gulp.src('src/index.js')
         .pipe(compile(false))
         .pipe(uglify())
         .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('styles:release', function() {
+gulp.task('styles:release', ['styles:build'], function() {
     return gulp.src('src/style/*.styl')
         .pipe(stylus())
         .pipe(gulp.dest('dist/'));
@@ -84,7 +90,7 @@ gulp.task('replace', function() {
         .pipe(gulp.dest('demo/'));
 });
 
-gulp.task('serve', ['scripts:build', 'styles:build'], function() {
+gulp.task('serve', ['scripts:watch', 'styles:build'], function() {
     browserSync.init({
         server: ['./test', '.']
     });
