@@ -153,3 +153,5 @@ Smooth scrollbar will calculate you touch moving velocity, and scroll to a dista
 I've tried using uniformly accelerated motion, but it worked so bad that i have to use `cubic-bezier` easing. If any one has an idea about this, please create an issue or make a pull request, thx.
 
 ### 2. SmoothScrollbar for non-angular project
+
+I prefer to use SmoothScrollbar as an universal components, so I am using some DOM-related operations in this project. I wish to build another repo for SmoothScrollbar and let current one to be an extension for angular projects if I have time.
