@@ -6,9 +6,10 @@ import './internals/index';
 
 angular.module('SmoothScrollbar', [])
     .service('ScrollbarService', class ScrollbarService{
-        constructor() {
+        constructor($q) {
             this.scrollbarInstances = {};
             this.deferreds = {};
+            this.$q = $q;
         }
 
         /**
@@ -20,20 +21,12 @@ angular.module('SmoothScrollbar', [])
          * @param {String} name: scrollbar name
          * @param {Function} fn: callback with instance
          */
-        getInstance(name, cb) {
-            if (typeof cb !== 'function') return;
+        getInstance(name) {
+            let { deferreds, $q } = this;
 
-            let { scrollbarInstances, deferreds } = this;
+            let deferred = deferreds[name] = deferreds[name] || $q.defer();
 
-            // execute async to avoid `destroy` executed after `get`
-            setTimeout(() => {
-                if (scrollbarInstances.hasOwnProperty(name)) {
-                    return cb(scrollbarInstances[name]);
-                }
-
-                deferreds[name] = deferreds[name] || [];
-                deferreds[name].push(cb);
-            });
+            return deferred.promise;
         }
 
         /**
@@ -43,6 +36,8 @@ angular.module('SmoothScrollbar', [])
          * @param {String} name: scrollbar name
          * @param {Element} elem: container element
          * @param {Object} options: as is explained in scrollbar constructor
+         *
+         * @return {Scrollbar} scrollbar instance
          */
         createInstance(name, elem, options) {
             let { scrollbarInstances, deferreds } = this;
@@ -54,13 +49,10 @@ angular.module('SmoothScrollbar', [])
             let instance = scrollbarInstances[name] = new SmoothScrollbar(elem, options);
 
             if (deferreds.hasOwnProperty(name)) {
-                // invoke delaied callbacks
-                deferreds[name].forEach((cb) => {
-                    setTimeout(() => cb(instance));
-                });
-
-                delete deferreds[name];
+                deferreds[name].resolve(instance);
             }
+
+            return instance;
         }
 
         /**

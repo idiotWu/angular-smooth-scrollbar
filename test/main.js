@@ -3,7 +3,7 @@
 
     var app = angular.module('demo', ['SmoothScrollbar']);
 
-    app.controller('GetDataCtrl', function($scope, ScrollbarService) {
+    app.controller('GetDataCtrl', function($scope, $timeout, ScrollbarService) {
         $scope.offset = {
             x: 0,
             y: 0
@@ -21,52 +21,50 @@
         var paragraphTmpl = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam, accusamus laudantium nostrum minima possimus optio voluptates id dignissimos, libero voluptas nesciunt. Consequatur deleniti corporis recusandae nesciunt. Maiores dignissimos praesentium tempore.';
         var article = $scope.article = [paragraphTmpl];
 
-        var lastTime, mustRun;
+        var scrollbarPromise = ScrollbarService.getInstance('getData');
 
-        ScrollbarService.getInstance('getData', function(scrollbar) {
-            console.log(scrollbar)
+        scrollbarPromise.then(function (scrollbar) {
             $scope.offset = scrollbar.offset;
-            $scope.$apply();
+
+            var lastTime, mustRun;
 
             scrollbar.addListener(function(status) {
                 var now = (new Date()).getTime();
                 lastTime = lastTime || now;
 
-                clearTimeout(mustRun);
+                $timeout.cancel(mustRun);
 
-                mustRun = setTimeout(function() {
-                    $scope.$apply(function() {
-                        $scope.offset = status.offset;
-                        $scope.velocity = status.velocity;
-                    });
+                mustRun = $timeout(function() {
+                    $scope.offset = status.offset;
+                    $scope.velocity = status.velocity;
                 }, 300);
 
                 if (now - lastTime < 300) return;
 
                 lastTime = now;
-                $scope.$apply(function() {
-                    $scope.offset = status.offset;
-                    $scope.velocity = status.velocity;
-                });
-            });
+                $scope.offset = status.offset;
+                $scope.velocity = status.velocity;
 
+                $scope.$apply();
+            });
+        });
+
+        scrollbarPromise.then(function (scrollbar) {
             var count = 0;
             scrollbar.infiniteScroll(function() {
                 if (count++ > 10) {
                     $scope.loading = 'the end';
-                    return;
-                }
-
-                $scope.$apply(function() {
+                } else {
                     $scope.loading = 'loading...';
-                    setTimeout(function() {
+
+                    $timeout(function() {
                         $scope.loading = 'pending...';
-                        article.push(paragraphTmpl);
-                        article.push(paragraphTmpl);
-                        $scope.$apply();
+                        article.push(paragraphTmpl, paragraphTmpl);
                         scrollbar.update();
                     }, 500);
-                });
+                }
+
+                $scope.$apply();
             });
         });
     });
