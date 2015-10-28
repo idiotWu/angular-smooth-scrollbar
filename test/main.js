@@ -50,6 +50,7 @@
         });
 
         scrollbarPromise.then(function (scrollbar) {
+            console.log(scrollbar)
             var count = 0;
             scrollbar.infiniteScroll(function() {
                 if (count++ > 10) {

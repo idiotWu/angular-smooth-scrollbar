@@ -1,13 +1,13 @@
 /**
  * @module
  * @prototype {Function} __touchHandlers
- * @dependencies [ SmoothScrollbar, #scrollTo, #setPosition, getOriginalEvent, getPosition, getTouchID, pickInRange ]
+ * @dependencies [ SmoothScrollbar, #scrollTo, #setPosition, getOriginalEvent, getPosition, getTouchID, pickInRange, fromChildSB ]
  */
 
 import '../apis/scroll_to';
 import '../apis/set_position';
 import { SmoothScrollbar } from '../smooth_scrollbar';
-import { getOriginalEvent, getPosition, getTouchID, pickInRange } from '../utils/index';
+import { getOriginalEvent, getPosition, getTouchID, pickInRange, fromChildSB } from '../utils/index';
 
 export { SmoothScrollbar };
 
@@ -84,14 +84,18 @@ let __touchHandlers = function({ easingDuration }) {
             return this.__updateThrottle();
         }
 
+        if (fromChildSB(evt, this.__children)) return;
+
         evt.preventDefault();
-        evt.stopPropagation();
+        // evt.stopPropagation();
 
         // don't need easing too
         this.setPosition(destX, destY);
     };
 
     let endHandler = (evt) => {
+        if (fromChildSB(evt, this.__children)) return;
+
         // release current touch
         delete touchRecords[lastTouchID];
         lastTouchID = undefined;

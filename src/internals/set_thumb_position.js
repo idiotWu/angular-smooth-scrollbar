@@ -14,7 +14,7 @@ export { SmoothScrollbar };
  * @internal
  * Set thumb position in track
  */
-let __setThumbPosition = function() {
+function __setThumbPosition() {
     let { x, y } = this.offset;
     let { xAxis, yAxis } = this.target;
 

@@ -1,14 +1,14 @@
 /**
  * @module
  * @prototype {Function} __mouseHandlers
- * @dependencies [ SmoothScrollbar, #getSize, #scrollTo, #setPosition, getPosition, getTouchID, pickInRange ]
+ * @dependencies [ SmoothScrollbar, #getSize, #scrollTo, #setPosition, getPosition, getTouchID, pickInRange, fromChildSB ]
  */
 
 import '../apis/get_size';
 import '../apis/scroll_to';
 import '../apis/set_position';
 import { SmoothScrollbar } from '../smooth_scrollbar';
-import { getPosition, getTouchID, pickInRange } from '../utils/index';
+import { getPosition, getTouchID, pickInRange, fromChildSB } from '../utils/index';
 
 export { SmoothScrollbar };
 
@@ -39,7 +39,7 @@ let __mouseHandlers = function({ speed }) {
     // click position as thumb center
     // @delegate
     let clickHandler = (evt) => {
-        if (isMouseMove || !/track/.test(evt.target.className)) return;
+        if (isMouseMove || !/track/.test(evt.target.className) || fromChildSB(evt, this.__children)) return;
 
         let track = evt.target;
         let direction = getTrackDir(track.className);
@@ -73,7 +73,7 @@ let __mouseHandlers = function({ speed }) {
 
     // @delegate
     let mousedownHandler = (evt) => {
-        if (!/thumb/.test(evt.target.className)) return;
+        if (!/thumb/.test(evt.target.className) || fromChildSB(evt, this.__children)) return;
         isMouseDown = true;
 
         let cursorPos = getPosition(evt);

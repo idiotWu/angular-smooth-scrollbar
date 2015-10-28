@@ -7,6 +7,11 @@
 import { motionBuilder, debounce, findChild } from './utils/index';
 import { DEFAULT_OPTIONS } from './options';
 
+let sbList = [];
+let updateChild = () => {
+    sbList.forEach((sb) => sb.__updateChildren());
+};
+
 /**
  * @constructor
  * Create scrollbar instance
@@ -93,5 +98,8 @@ export class SmoothScrollbar {
             stepLength: parseFloat(stepLength) || DEFAULT_OPTIONS.STEP_LENGTH,
             easingDuration: parseFloat(easingDuration) || DEFAULT_OPTIONS.EASING_DURATION
         });
+
+        sbList.push(this);
+        updateChild();
     }
 }

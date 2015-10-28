@@ -6,6 +6,8 @@ import './internals/index';
 
 angular.module('SmoothScrollbar', [])
     .service('ScrollbarService', class ScrollbarService{
+        static $inject = ['$q'];
+
         constructor($q) {
             this.scrollbarInstances = {};
             this.deferreds = {};
