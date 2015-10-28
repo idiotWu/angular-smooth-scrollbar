@@ -64,6 +64,8 @@ function __initScrollbar(options) {
         window.removeEventListener('mouseup', mouseHandlers.up);
         window.removeEventListener('blur', mouseHandlers.up);
         window.removeEventListener('resize', resizeHandler);
+
+        this.__listeners.length = 0;
     };
 };
 
