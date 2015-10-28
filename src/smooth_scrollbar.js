@@ -41,14 +41,23 @@ export class SmoothScrollbar {
                         track: trackY,
                         thumb: findChild(trackY, 'scrollbar-thumb-y')
                     }
-                }
+                },
+                enumerable: true
             },
             offset: {
-                value: {
-                    x: 0,
-                    y: 0
-                },
-                writable: true
+                value: { x: 0, y: 0 },
+                writable: true,
+                enumerable: true
+            },
+            limit: {
+                value: {},
+                writable: true,
+                enumerable: true
+            },
+            size: {
+                value: {},
+                writable: true,
+                enumerable: true
             },
             __listeners: {
                 value: [],
