@@ -64,12 +64,13 @@ angular.module('SmoothScrollbar', [])
          * @param {String} name: scrollbar name
          */
         destroyInstance(name) {
-            let { scrollbarInstances } = this;
+            let { scrollbarInstances, deferred } = this;
             let instance = scrollbarInstances[name];
 
             if (instance) {
                 instance.destroy();
                 delete scrollbarInstances[name];
+                delete deferred[name];
             }
         }
     })
