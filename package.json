@@ -1,6 +1,6 @@
 {
   "name": "angular-smooth-scrollbar",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "An angular module that allows you customize smooth scrollbars",
   "main": "dist/smooth_scrollbar.js",
   "scripts": {
@@ -24,8 +24,7 @@
   },
   "homepage": "https://github.com/idiotWu/angular-smooth-scrollbar#readme",
   "dependencies": {
-    "babel-runtime": "^5.8.20",
-    "bezier-easing": "gre/bezier-easing"
+    "babel-runtime": "^5.8.20"
   },
   "devDependencies": {
     "gulp": "^3.9.0",

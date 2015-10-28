@@ -54,9 +54,9 @@ To avoid repainting, I use `translate3d` in scroll content to create composite l
 
 You can access your scrollbar instances through `ScrollbarService`.
 
-### ScrollbarService.getInstance( name, cb )
+### ScrollbarService.getInstance( name )
 
-Get scrollbar instance by giving the name, and instance is passed through callback function. If the named instance is already existed, callback will be invoked as soon as possible, otherwise callback will not be called until that instance is created.
+Get scrollbar instance by giving the name, and return a promise with instance.
 
 ### ScrollbarService.destroyInstance( name )
 
