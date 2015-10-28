@@ -69,6 +69,9 @@ SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.off
     });
 
     // invoke all listeners
-    // don't need async calls
-    __listeners.forEach((fn) => fn(status));
+    __listeners.forEach((fn) => {
+        requestAnimationFrame(() => {
+            fn(status);
+        });
+    });
 };
