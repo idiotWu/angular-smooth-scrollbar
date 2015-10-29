@@ -125,11 +125,6 @@ A status object is passed through callback with following properties:
         // max scroll distance(px)
         x: 1000,
         y: 200
-    },
-    velocity: {
-        // scrolling velocity(px/ms)
-        x: 0.01,
-        y: 0.97
     }
 }
 ```
