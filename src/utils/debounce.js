@@ -3,27 +3,25 @@
  * @export {Function} debounce
  */
 
-// debounce timers reset delay
-const RESET_DELAY = 100;
+// debounce timers reset wait
+const RESET_WAIT = 100;
 
 /**
  * Call fn if it isn't be called in a period
  *
  * @param {Function} fn
- * @param {Object} [options]: options includes three available params:
- *                            [delay]: debounce delay
- *                            [leading]: whether run in beginnig
- *                            [trailing]: whether run in ending
+ * @param {Number} [wait]: debounce wait, default is REST_WAIT
+ * @param {Boolean} [immediate]: whether to run task at leading, default is true
  *
  * @return {Function}
  */
-export let debounce = (fn, { delay = RESET_DELAY, leading = true, trailing = true } = {}) => {
+export let debounce = (fn, wait = RESET_WAIT, immediate = true) => {
     if (typeof fn !== 'function') return;
 
     let timer;
 
     return (...args) => {
-        if (!timer && leading) {
+        if (!timer && immediate) {
             setTimeout(() => fn(...args));
         }
 
@@ -31,7 +29,7 @@ export let debounce = (fn, { delay = RESET_DELAY, leading = true, trailing = tru
 
         timer = setTimeout(() => {
             timer = undefined;
-            if (trailing) fn(...args);
-        }, delay);
+            fn(...args);
+        }, wait);
     };
 };
