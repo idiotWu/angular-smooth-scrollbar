@@ -26,10 +26,9 @@
     <article ng-controller="GetDataCtrl" id="get-data">
         <h3>Get Data With 10x Infinite Scroll</h3>
         <header>
-            <span>offset.x: {{offset.x.toFixed(2)}}</span>
-            <span>offset.y: {{offset.y.toFixed(2)}}</span>
-            <span>velocity(px/ms): x:{{velocity.x.toFixed(2)}}, y:{{velocity.y.toFixed(2)}}</span>
-            <span>status: {{loading}}</span>
+            <span ng-bind="'offset.x: ' + offset.x.toFixed(2)"></span>
+            <span ng-bind="'offset.y: ' + offset.y.toFixed(2)"></span>
+            <span ng-bind="'infinite scroll: ' + loading"></span>
         </header>
         <section scrollbar="getData" class="scroll">
             <img src="your_diary.jpg" height="1080" width="1920">
