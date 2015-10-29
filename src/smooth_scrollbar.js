@@ -29,7 +29,7 @@ export class SmoothScrollbar {
         let trackY = findChild(elem, 'scrollbar-track-y');
 
         Object.defineProperties(this, {
-            target: {
+            __target: {
                 value: {
                     container: elem,
                     content: findChild(elem, 'scroll-content'),
@@ -41,25 +41,13 @@ export class SmoothScrollbar {
                         track: trackY,
                         thumb: findChild(trackY, 'scrollbar-thumb-y')
                     }
-                },
-                enumerable: true
-            },
-            offset: {
-                value: { x: 0, y: 0 },
-                writable: true,
-                enumerable: true
-            },
-            limit: {
-                value: {},
-                writable: true,
-                enumerable: true
-            },
-            size: {
-                value: {},
-                writable: true,
-                enumerable: true
+                }
             },
             __listeners: {
+                value: [],
+                writable: true
+            },
+            __handlers: {
                 value: [],
                 writable: true
             },
@@ -71,14 +59,20 @@ export class SmoothScrollbar {
             },
             __scrollAnimation: {
                 writable: true
-            },
-            __lastScrollTime: {
-                writable: true
-            },
-            __resetScrollTime: {
-               value: debounce(() => { this.__lastScrollTime = undefined; }, { leading: false, duration: 100 })
             }
         });
+
+        this.offset = {
+            x: 0,
+            y: 0
+        };
+
+        this.limit = {
+            x: Infinity,
+            y: Infinity
+        };
+
+        this.size = this.getSize();
 
         this.showTrack = (direction = 'both') => {
             direction = direction.toLowerCase();
@@ -100,7 +94,7 @@ export class SmoothScrollbar {
         this.hideTrack = debounce(() => {
             trackX.classList.remove('show');
             trackY.classList.remove('show');
-        }, false, 1e3);
+        }, 300, false);
 
         this.__initScrollbar({
             speed: parseFloat(speed) || DEFAULT_OPTIONS.SPEED,

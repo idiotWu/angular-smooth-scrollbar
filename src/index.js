@@ -98,12 +98,23 @@ angular.module('SmoothScrollbar', [])
                 let { name, speed, stepLength, easingDuration, easingCurve } = scope;
                 if (!name) throw new Error('scrollbar name is required');
 
-                ScrollbarService.createInstance(name, elem[0], {
+                let scrollbar = ScrollbarService.createInstance(name, elem[0], {
                     speed,
                     stepLength,
                     easingDuration,
                     easingCurve
                 });
+
+                let originalFn = scrollbar.addListener;
+
+                scrollbar.addListener = (cb) => {
+                    if (typeof cb !== 'function') return;
+
+                    originalFn.call(scrollbar, (...args) => {
+                        cb(...args);
+                        scope.$apply();
+                    });
+                };
 
                 scope.$on('$destroy', () => {
                     ScrollbarService.destroyInstance(name);

@@ -1,13 +1,13 @@
 /**
  * @module
- * @prototype {Function} __touchHandlers
- * @dependencies [ SmoothScrollbar, #scrollTo, #setPosition, getOriginalEvent, getPosition, getTouchID, pickInRange, fromChildSB ]
+ * @prototype {Function} __touchHandler
+ * @dependencies [ SmoothScrollbar, #scrollTo, #setPosition, getOriginalEvent, getPosition, getTouchID, pickInRange ]
  */
 
 import '../apis/scroll_to';
 import '../apis/set_position';
 import { SmoothScrollbar } from '../smooth_scrollbar';
-import { getOriginalEvent, getPosition, getTouchID, pickInRange, fromChildSB } from '../utils/index';
+import { getOriginalEvent, getPosition, getTouchID, pickInRange } from '../utils/index';
 
 export { SmoothScrollbar };
 
@@ -21,7 +21,9 @@ export { SmoothScrollbar };
  *
  * @return {Object}: a set of event handlers
  */
-let __touchHandlers = function({ easingDuration }) {
+let __touchHandler = function({ easingDuration }) {
+    let { container } = this.__target;
+
     let lastTouchTime, lastTouchID;
     let moveVelocity = {}, lastTouchPos = {}, touchRecords = {};
 
@@ -38,7 +40,7 @@ let __touchHandlers = function({ easingDuration }) {
         });
     };
 
-    let startHandler = (evt) => {
+    this.$on('touchstart', container, (evt) => {
         cancelAnimationFrame(this.scrollAnimation);
         updateRecords(evt);
 
@@ -46,9 +48,11 @@ let __touchHandlers = function({ easingDuration }) {
         lastTouchPos = getPosition(evt);
         lastTouchTime = (new Date()).getTime();
         moveVelocity.x = moveVelocity.y = 0;
-    };
+    });
 
-    let moveHandler = (evt) => {
+    this.$on('touchmove', container, (evt) => {
+        if (this.__fromChild(evt)) return;
+
         updateRecords(evt);
 
         let touchID = getTouchID(evt);
@@ -84,17 +88,14 @@ let __touchHandlers = function({ easingDuration }) {
             return this.__updateThrottle();
         }
 
-        if (fromChildSB(evt, this.__children)) return;
-
         evt.preventDefault();
-        // evt.stopPropagation();
 
         // don't need easing too
         this.setPosition(destX, destY);
-    };
+    });
 
-    let endHandler = (evt) => {
-        if (fromChildSB(evt, this.__children)) return;
+    this.$on('touchend', container, (evt) => {
+        if (this.__fromChild(evt)) return;
 
         // release current touch
         delete touchRecords[lastTouchID];
@@ -113,17 +114,11 @@ let __touchHandlers = function({ easingDuration }) {
         }
 
         moveVelocity.x = moveVelocity.y = 0;
-    };
-
-    return {
-        start: startHandler,
-        move: moveHandler,
-        end: endHandler
-    };
+    });
 };
 
-Object.defineProperty(SmoothScrollbar.prototype, '__touchHandlers', {
-    value: __touchHandlers,
+Object.defineProperty(SmoothScrollbar.prototype, '__touchHandler', {
+    value: __touchHandler,
     writable: true,
     configurable: true
 });

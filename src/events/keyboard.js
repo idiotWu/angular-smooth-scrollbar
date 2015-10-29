@@ -24,20 +24,27 @@ const KEYMAPS = {
  * Keypress event handler builder
  *
  * @param {Object} option
- *
- * @return {Function}: event handler
  */
 let __keyboardHandler = function({ speed, stepLength }) {
-    let isFocused;
-    let { container } = this.target;
+    let isFocused = false;
+    let { container } = this.__target;
 
-    container.addEventListener('mousedown', (evt) => {
-        evt.stopPropagation();
+    this.$on('mouseup', container, (evt) => evt.stopPropagation());
+
+    this.$on('mouseup', document, () => {
+        isFocused = false;
+    });
+
+    this.$on('mousedown', container, (evt) => {
+        if (this.__fromChild(evt)) {
+            isFocused = false;
+            return;
+        }
+
         isFocused = true;
     });
-    document.addEventListener('mousedown', () => isFocused = false);
 
-    return (evt) => {
+    this.$on('keydown', window, (evt) => {
         if (!isFocused) return;
 
         evt = getOriginalEvent(evt);
@@ -61,7 +68,7 @@ let __keyboardHandler = function({ speed, stepLength }) {
         evt.stopPropagation();
 
         this.scrollTo(destX, destY, 600 / speed);
-    };
+    });
 };
 
 Object.defineProperty(SmoothScrollbar.prototype, '__keyboardHandler', {

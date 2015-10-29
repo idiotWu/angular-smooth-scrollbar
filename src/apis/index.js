@@ -1,4 +1,5 @@
 export * from './update';
+export * from './destroy';
 export * from './get_size';
 export * from './listener';
 export * from './scroll_to';

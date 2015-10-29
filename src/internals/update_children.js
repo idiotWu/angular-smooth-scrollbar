@@ -1,6 +1,6 @@
 /**
  * @module
- * @prototype
+ * @prototype {Function} __updateChildren
  * @dependencies [ SmoothScrollbar ]
  */
 
@@ -10,7 +10,7 @@ export { SmoothScrollbar };
 
 function __updateChildren() {
     Object.defineProperty(this, '__children', {
-        value: [...this.target.content.querySelectorAll('[scrollbar]')],
+        value: [...this.__target.content.querySelectorAll('[scrollbar]')],
         writable: true
     });
 };

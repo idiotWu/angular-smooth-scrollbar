@@ -10,6 +10,9 @@ import { getDelta, pickInRange } from '../utils/index';
 
 export { SmoothScrollbar };
 
+// is standard `wheel` event supported check
+const WHEEL_EVENT = 'onwheel' in window ? 'wheel' : 'mousewheel';
+
 /**
  * @method
  * @internal
@@ -20,7 +23,9 @@ export { SmoothScrollbar };
  * @return {Function}: event handler
  */
 let __wheelHandler = function({ speed, stepLength }) {
-    return (evt) => {
+    let { container } = this.__target;
+
+    this.$on(WHEEL_EVENT, container, (evt) => {
         let { offset, limit } = this;
         let { x, y } = getDelta(evt);
 
@@ -37,7 +42,7 @@ let __wheelHandler = function({ speed, stepLength }) {
         let duration = 120 * Math.sqrt(Math.max(Math.abs(x), Math.abs(y)));
 
         this.scrollTo(destX, destY, duration / speed);
-    };
+    });
 };
 
 Object.defineProperty(SmoothScrollbar.prototype, '__wheelHandler', {

@@ -32,7 +32,7 @@ SmoothScrollbar.prototype.update = function(cb) {
 
         this.limit = newLimit;
 
-        let { xAxis, yAxis } = this.target;
+        let { xAxis, yAxis } = this.__target;
 
         // hide scrollbar if content size less than container
         setStyle(xAxis.track, {

@@ -20,11 +20,10 @@ export { SmoothScrollbar };
  */
 SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.offset.y) {
     cancelAnimationFrame(this.__scrollAnimation);
-    this.__resetScrollTime();
     this.__updateThrottle();
 
     let status = {};
-    let { offset, limit, target, __listeners } = this;
+    let { offset, limit, __target, __listeners } = this;
 
     if (Math.abs(x - offset.x) > 1) this.showTrack('x');
     if (Math.abs(y - offset.y) > 1) this.showTrack('y');
@@ -36,34 +35,23 @@ SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.off
 
     if (x === offset.x && y === offset.y) return;
 
-    let now = (new Date()).getTime();
-    let lastTime = this.__lastScrollTime;
-
-    if (!lastTime) lastTime = this.__lastScrollTime = now;
-
-    let duration = (now - lastTime) || 1;
-    this.__lastScrollTime = now;
-
     status.direction = {
         x: x === offset.x ? 'none' : (x > offset.x ? 'right' : 'left'),
         y: y === offset.y ? 'none' : (y > offset.y ? 'down' : 'up')
     };
+
     status.limit = { ...limit };
 
-    status.velocity = {
-        x: (x - offset.x) / duration,
-        y: (y - offset.y) / duration
-    };
-
-    status.offset = { x, y };
-    this.offset = { ...status.offset };
+    offset.x = x;
+    offset.y = y;
+    status.offset = { ...offset };
 
     // reset thumb position after offset update
     this.__setThumbPosition();
 
     let style = `translate3d(${-x}px, ${-y}px, 0)`;
 
-    setStyle(target.content, {
+    setStyle(__target.content, {
         '-webkit-transform': style,
         'transform': style
     });
