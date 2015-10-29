@@ -23,34 +23,17 @@
 
         var scrollbarPromise = ScrollbarService.getInstance('getData');
 
+
         scrollbarPromise.then(function (scrollbar) {
             $scope.offset = scrollbar.offset;
 
-            var lastTime, mustRun;
-
             scrollbar.addListener(function(status) {
-                var now = (new Date()).getTime();
-                lastTime = lastTime || now;
-
-                $timeout.cancel(mustRun);
-
-                mustRun = $timeout(function() {
-                    $scope.offset = status.offset;
-                    $scope.velocity = status.velocity;
-                }, 300);
-
-                if (now - lastTime < 300) return;
-
-                lastTime = now;
                 $scope.offset = status.offset;
                 $scope.velocity = status.velocity;
-
-                $scope.$apply();
             });
         });
 
         scrollbarPromise.then(function (scrollbar) {
-            console.log(scrollbar)
             var count = 0;
             scrollbar.infiniteScroll(function() {
                 if (count++ > 10) {
@@ -64,8 +47,6 @@
                         scrollbar.update();
                     }, 500);
                 }
-
-                $scope.$apply();
             });
         });
     });
