@@ -29,9 +29,9 @@ let __keyboardHandler = function({ speed, stepLength }) {
     let isFocused = false;
     let { container } = this.__target;
 
-    this.$on('mouseup', container, (evt) => evt.stopPropagation());
+    this.$on('click', container, (evt) => evt.stopPropagation());
 
-    this.$on('mouseup', document, () => {
+    this.$on('click', document, () => {
         isFocused = false;
     });
 
