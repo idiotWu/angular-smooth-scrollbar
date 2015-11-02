@@ -21,10 +21,13 @@ angular.module('SmoothScrollbar', [])
          * callback wiil be invoked after instance is created
          *
          * @param {String} name: scrollbar name
-         * @param {Function} fn: callback with instance
          */
         getInstance(name) {
-            let { deferreds, $q } = this;
+            let { scrollbarInstances, deferreds, $q } = this;
+
+            if (scrollbarInstances.hasOwnProperty(name)) {
+                return $q.resolve(scrollbarInstances[name]);
+            }
 
             let deferred = deferreds[name] = deferreds[name] || $q.defer();
 
