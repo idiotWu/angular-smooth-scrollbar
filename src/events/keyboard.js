@@ -29,22 +29,15 @@ let __keyboardHandler = function({ speed, stepLength }) {
     let isFocused = false;
     let { container } = this.__target;
 
-    this.$on('click', container, (evt) => evt.stopPropagation());
-
-    this.$on('click', document, () => {
-        isFocused = false;
-    });
-
-    this.$on('mousedown', container, (evt) => {
-        if (this.__fromChild(evt)) {
-            isFocused = false;
-            return;
-        }
-
+    this.$on('focus', container, () => {
         isFocused = true;
     });
 
-    this.$on('keydown', window, (evt) => {
+    this.$on('blur', container, () => {
+        isFocused = false;
+    });
+
+    this.$on('keydown', container, (evt) => {
         if (!isFocused) return;
 
         evt = getOriginalEvent(evt);
@@ -65,7 +58,6 @@ let __keyboardHandler = function({ speed, stepLength }) {
         }
 
         evt.preventDefault();
-        evt.stopPropagation();
 
         this.scrollTo(destX, destY, 600 / speed);
     });

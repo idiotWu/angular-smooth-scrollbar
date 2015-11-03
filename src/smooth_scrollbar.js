@@ -4,7 +4,7 @@
  * @dependencies [ DEFAULT_OPTIONS, motionBuilder, debounce, findChild ]
  */
 
-import { motionBuilder, debounce, findChild } from './utils/index';
+import { motionBuilder, debounce, findChild, setStyle } from './utils/index';
 import { DEFAULT_OPTIONS } from './options';
 
 let sbList = [];
@@ -25,6 +25,9 @@ let updateChild = () => {
  */
 export class SmoothScrollbar {
     constructor(elem, { speed, stepLength, easingDuration, easingCurve }) {
+        elem.setAttribute('tabindex', '1');
+        setStyle(elem, { outline: 'none' });
+
         let trackX = findChild(elem, 'scrollbar-track-x');
         let trackY = findChild(elem, 'scrollbar-track-y');
 
