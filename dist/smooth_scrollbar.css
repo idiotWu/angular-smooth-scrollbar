@@ -3,7 +3,7 @@
   overflow: hidden;
   user-select: none;
 }
-[scrollbar] .scroll-content > * {
+[scrollbar].scrolling .scroll-content > * {
   backface-visibility: hidden;
 }
 [scrollbar] .scrollbar-track {

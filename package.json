@@ -1,6 +1,6 @@
 {
   "name": "angular-smooth-scrollbar",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "An angular module that allows you customize smooth scrollbars",
   "main": "dist/smooth_scrollbar.js",
   "scripts": {
