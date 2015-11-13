@@ -79,6 +79,7 @@ export class SmoothScrollbar {
 
         this.showTrack = (direction = 'both') => {
             direction = direction.toLowerCase();
+            elem.classList.add('scrolling');
 
             if (direction === 'both') {
                 trackX.classList.add('show');
@@ -95,6 +96,7 @@ export class SmoothScrollbar {
         };
 
         this.hideTrack = debounce(() => {
+            elem.classList.remove('scrolling');
             trackX.classList.remove('show');
             trackY.classList.remove('show');
         }, 300, false);
