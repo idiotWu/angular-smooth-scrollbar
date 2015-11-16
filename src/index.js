@@ -108,12 +108,24 @@ angular.module('SmoothScrollbar', [])
                     easingCurve
                 });
 
-                let originalFn = scrollbar.addListener;
+                let original = {
+                    addListener: scrollbar.addListener,
+                    infiniteScroll: scrollbar.infiniteScroll
+                };
 
                 scrollbar.addListener = (cb) => {
                     if (typeof cb !== 'function') return;
 
-                    originalFn.call(scrollbar, (...args) => {
+                    original.addListener.call(scrollbar, (...args) => {
+                        cb(...args);
+                        scope.$apply();
+                    });
+                };
+
+                scrollbar.infiniteScroll = (cb, threshold) => {
+                    if (typeof cb !== 'function') return;
+
+                    original.infiniteScroll.call(scrollbar, (...args) => {
                         cb(...args);
                         scope.$apply();
                     });
