@@ -109,26 +109,39 @@ angular.module('SmoothScrollbar', [])
                 });
 
                 let original = {
+                    update: scrollbar.update,
+                    scrollTo: scrollbar.scrollTo,
                     addListener: scrollbar.addListener,
                     infiniteScroll: scrollbar.infiniteScroll
+                };
+
+                let applyChange = (cb) => {
+                    if (typeof cb !== 'function') return;
+
+                    return (...args) => {
+                        cb(...args);
+                        scope.$apply();
+                    };
+                };
+
+                scrollbar.update = (cb) => {
+                    original.update.call(scrollbar, applyChange(cb));
+                };
+
+                scrollbar.scrollTo = (x, y, duration, cb) => {
+                    original.scrollTo.call(scrollbar, x, y, duration, applyChange(cb));
                 };
 
                 scrollbar.addListener = (cb) => {
                     if (typeof cb !== 'function') return;
 
-                    original.addListener.call(scrollbar, (...args) => {
-                        cb(...args);
-                        scope.$apply();
-                    });
+                    original.addListener.call(scrollbar, applyChange(cb));
                 };
 
                 scrollbar.infiniteScroll = (cb, threshold) => {
                     if (typeof cb !== 'function') return;
 
-                    original.infiniteScroll.call(scrollbar, (...args) => {
-                        cb(...args);
-                        scope.$apply();
-                    });
+                    original.infiniteScroll.call(scrollbar, applyChange(cb));
                 };
 
                 scope.$on('$destroy', () => {
