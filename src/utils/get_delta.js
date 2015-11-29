@@ -11,6 +11,21 @@ const DELTA_SCALE = {
     OTHERS: -120
 };
 
+const DELTA_MODE = {
+    // todo: accurate line/page mode value
+    DOM_DELTA_PIXEL: 1,
+    DOM_DELTA_LINE: 20,
+    DOM_DELTA_PAGE: window.innerHeight
+};
+
+const DOM_DELTA_MAP = {
+    0: 'DOM_DELTA_PIXEL',
+    1: 'DOM_DELTA_LINE',
+    2: 'DOM_DELTA_PAGE'
+};
+
+let getDeltaMode = (mode) => DELTA_MODE[ DOM_DELTA_MAP[mode] ] || DELTA_MODE.DOM_DELTA_PIXEL;
+
 /**
  * Normalizing wheel delta
  *
@@ -21,9 +36,11 @@ export let getDelta = (evt) => {
     evt = getOriginalEvent(evt);
 
     if ('deltaX' in evt) {
+        const mode = getDeltaMode(evt.deltaMode);
+
         return {
-            x: evt.deltaX / DELTA_SCALE.STANDARD,
-            y: evt.deltaY / DELTA_SCALE.STANDARD
+            x: evt.deltaX / DELTA_SCALE.STANDARD * mode,
+            y: evt.deltaY / DELTA_SCALE.STANDARD * mode
         };
     }
 
