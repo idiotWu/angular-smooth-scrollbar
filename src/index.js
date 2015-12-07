@@ -91,15 +91,14 @@ angular.module('SmoothScrollbar', [])
                 </aside>
             `,
             scope: {
-                name: '@scrollbar',
                 speed: '@',
                 stepLength: '@',
                 easingDuration: '@',
                 easingCurve: '@'
             },
-            link(scope, elem) {
-                let { name, speed, stepLength, easingDuration, easingCurve } = scope;
-                if (!name) throw new Error('scrollbar name is required');
+            link(scope, elem, attrs) {
+                const { speed, stepLength, easingDuration, easingCurve } = scope;
+                const name = attrs.scrollbar || attrs.name || Date.now().toString(32);
 
                 let scrollbar = ScrollbarService.createInstance(name, elem[0], {
                     speed,
