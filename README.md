@@ -36,15 +36,25 @@ To avoid repainting, I use `translate3d` in scroll content to create composite l
 
 3. Use it wherever you want:
 
-    ```html
-    <section scrollbar="scrollbarName">
-        ...
-    </section>
-    ```
+    - As element:
+
+        ```html
+        <scrollbar name="scrollbarName">
+            ...
+        </scrollbar>
+        ```
+
+    - As attribute:
+
+        ```html
+        <section scrollbar="scrollbarName">
+            ...
+        </section>
+        ```
 
 ### Available Options
 
-- name**(required)**: passed through `scrollbar` attribute, determine the name for this scrollbar instance.
+- name: passed through `scrollbar` or `name` attribute, determine the name for this scrollbar instance.
 - speed: scrolling speed, default is `1`.
 - stepLength: wheel scroll step length(px/delta), default is `40`.
 - easingDuration: swipe easing duration(ms), default is `1000`.
@@ -52,7 +62,7 @@ To avoid repainting, I use `translate3d` in scroll content to create composite l
 
 ## ScrollbarService
 
-You can access your scrollbar instances through `ScrollbarService`.
+By given scrollbar a name via attribute, you can access your scrollbar instances through `ScrollbarService`.
 
 ### ScrollbarService.getInstance( name )
 
