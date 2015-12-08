@@ -2,6 +2,10 @@
 
 An angular module that helps you to customize high performance scrollbar.
 
+## Requirements
+
+Angular 1.4+
+
 ## Install
 
 ```
