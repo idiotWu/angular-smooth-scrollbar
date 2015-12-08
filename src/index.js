@@ -23,10 +23,10 @@ angular.module('SmoothScrollbar', [])
          * @param {String} name: scrollbar name
          */
         getInstance(name) {
-            let { scrollbarInstances, deferreds, $q } = this;
+            const { scrollbarInstances, deferreds, $q } = this;
 
             if (scrollbarInstances.hasOwnProperty(name)) {
-                return $q.resolve(scrollbarInstances[name]);
+                return ($q.resolve || $q.when)(scrollbarInstances[name]);
             }
 
             let deferred = deferreds[name] = deferreds[name] || $q.defer();
@@ -45,7 +45,7 @@ angular.module('SmoothScrollbar', [])
          * @return {Scrollbar} scrollbar instance
          */
         createInstance(name, elem, options) {
-            let { scrollbarInstances, deferreds } = this;
+            const { scrollbarInstances, deferreds } = this;
 
             if (scrollbarInstances.hasOwnProperty(name)) {
                 return scrollbarInstances[name];
