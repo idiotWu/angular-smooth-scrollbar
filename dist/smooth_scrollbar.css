@@ -3,18 +3,28 @@ scrollbar,
   display: block;
   position: relative;
   overflow: hidden;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
-scrollbar.scrolling .scroll-content > *,
-[scrollbar].scrolling .scroll-content > * {
-  backface-visibility: hidden;
+scrollbar .scroll-content,
+[scrollbar] .scroll-content {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+scrollbar.scrolling .scroll-content,
+[scrollbar].scrolling .scroll-content {
+  pointer-events: none;
 }
 scrollbar .scrollbar-track,
 [scrollbar] .scrollbar-track {
   position: absolute;
   opacity: 0;
   z-index: 1;
-  transition: opacity 0.5s 1s ease-out, background 0.5s ease-out;
+  -webkit-transition: opacity 0.5s 1s ease-out, background 0.5s ease-out;
+          transition: opacity 0.5s 1s ease-out, background 0.5s ease-out;
   background: none;
 }
 scrollbar .scrollbar-track.show,
@@ -22,7 +32,8 @@ scrollbar .scrollbar-track.show,
 scrollbar .scrollbar-track:hover,
 [scrollbar] .scrollbar-track:hover {
   opacity: 1;
-  transition-delay: 0s;
+  -webkit-transition-delay: 0s;
+          transition-delay: 0s;
 }
 scrollbar .scrollbar-track:hover,
 [scrollbar] .scrollbar-track:hover {
