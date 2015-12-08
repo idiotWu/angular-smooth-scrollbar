@@ -66,7 +66,7 @@ gulp.task('scripts:build', function() {
 gulp.task('styles:build', function() {
     return gulp.src('src/style/*.styl')
         .pipe(stylus())
-        .pipe(autoprefixer())
+        .pipe(autoprefixer('> 1%, last 2 versions, Firefox ESR, Opera 12.1, ie >= 10'))
         .pipe(gulp.dest('build/'))
         .pipe(browserSync.stream());
 });
@@ -79,8 +79,7 @@ gulp.task('scripts:release', ['scripts:build'], function() {
 });
 
 gulp.task('styles:release', ['styles:build'], function() {
-    return gulp.src('src/style/*.styl')
-        .pipe(stylus())
+    return gulp.src('build/**/*.css')
         .pipe(gulp.dest('dist/'));
 });
 
