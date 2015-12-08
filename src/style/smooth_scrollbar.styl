@@ -8,10 +8,13 @@ scrollbar
   overflow: hidden
   user-select: none
 
-  &.scrolling .scroll-content
-    > *
-      // fix scroll element disapper on ios
-      backface-visibility: hidden
+  .scroll-content
+    transform: translate3d(0, 0, 0)
+    will-change: transform
+
+  &.scrolling
+    .scroll-content
+      pointer-events: none
 
   .scrollbar-track
     position: absolute
