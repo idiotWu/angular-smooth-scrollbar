@@ -5,7 +5,10 @@
     "Dolphin Wood <dolphin.w.e@gmail.com>"
   ],
   "description": "An angular module that allows you customize smooth scrollbars",
-  "main": "dist/smooth_scrollbar.js",
+  "main": [
+    "dist/smooth_scrollbar.js",
+    "dist/smooth_scrollbar.css"
+  ],
   "moduleType": [
     "es6"
   ],
