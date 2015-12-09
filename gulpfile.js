@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var util = require('gulp-util');
 var stylus = require('gulp-stylus');
 var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
 var replace = require('gulp-replace');
 var webpack = require('webpack-stream');
 var sizereport = require('gulp-sizereport');
@@ -85,11 +86,19 @@ gulp.task('serve', ['scripts:watch'], function() {
 });
 
 gulp.task('copy:release', function() {
+    return gulp.src('bower_components/smooth-scrollbar/dist/smooth_scrollbar.css')
+        .pipe(rename({
+            basename: 'angular-smooth-scrollbar'
+        }))
+        .pipe(gulp.dest('dist/'))
+});
+
+gulp.task('copy:demo', ['copy:release'], function() {
     return gulp.src(['test/**/*.*', '!test/**/*.html'])
         .pipe(gulp.dest('demo/'));
 });
 
-gulp.task('release', ['scripts:release', 'replace', 'copy:release'], function() {
+gulp.task('release', ['scripts:release', 'replace', 'copy:demo'], function() {
     return gulp.src('dist/**/*.*')
         .pipe(sizereport());
 });
