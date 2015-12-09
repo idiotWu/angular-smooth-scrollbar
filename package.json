@@ -25,7 +25,8 @@
   "homepage": "https://github.com/idiotWu/angular-smooth-scrollbar#readme",
   "dependencies": {
     "babel-runtime": "^5.8.20",
-    "bezier-easing": "^1.1.1"
+    "bezier-easing": "^1.1.1",
+    "smooth-scrollbar": "^1.0.0"
   },
   "devDependencies": {
     "gulp": "^3.9.0",

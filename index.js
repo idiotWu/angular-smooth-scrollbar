@@ -1,8 +1,4 @@
-import { SmoothScrollbar } from './smooth_scrollbar';
-
-import './apis/index';
-import './events/index';
-import './internals/index';
+import SmoothScrollbar from 'smooth-scrollbar';
 
 angular.module('SmoothScrollbar', [])
     .service('ScrollbarService', class ScrollbarService{
