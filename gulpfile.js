@@ -77,7 +77,15 @@ gulp.task('replace', function() {
         .pipe(gulp.dest('demo/'));
 });
 
-gulp.task('serve', ['scripts:watch'], function() {
+gulp.task('copy:style', function() {
+    return gulp.src('bower_components/smooth-scrollbar/dist/smooth_scrollbar.css')
+        .pipe(rename({
+            basename: 'angular-smooth-scrollbar'
+        }))
+        .pipe(gulp.dest('build/'))
+});
+
+gulp.task('serve', ['scripts:watch', 'copy:style'], function() {
     browserSync.init({
         server: ['./test', '.']
     });
@@ -85,15 +93,7 @@ gulp.task('serve', ['scripts:watch'], function() {
     gulp.watch('test/*.*').on('change', browserSync.reload);
 });
 
-gulp.task('copy:release', function() {
-    return gulp.src('bower_components/smooth-scrollbar/dist/smooth_scrollbar.css')
-        .pipe(rename({
-            basename: 'angular-smooth-scrollbar'
-        }))
-        .pipe(gulp.dest('dist/'))
-});
-
-gulp.task('copy:demo', ['copy:release'], function() {
+gulp.task('copy:demo', function() {
     return gulp.src(['test/**/*.*', '!test/**/*.html'])
         .pipe(gulp.dest('demo/'));
 });
