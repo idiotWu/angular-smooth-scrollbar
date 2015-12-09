@@ -12,7 +12,7 @@ var compile = function(watch, done) {
     var options = {
         watch: watch,
         output: {
-            filename: 'smooth_scrollbar.js'
+            filename: 'angular-smooth-scrollbar.js'
         },
         module: {
             preLoaders: [{
@@ -64,7 +64,7 @@ gulp.task('scripts:build', function() {
 });
 
 gulp.task('scripts:release', ['scripts:build'], function() {
-    return gulp.src('src/index.js')
+    return gulp.src('index.js')
         .pipe(compile(false))
         .pipe(uglify())
         .pipe(gulp.dest('dist/'));
