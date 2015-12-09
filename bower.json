@@ -27,7 +27,9 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.4.3",
+    "angular": "~1.4.3"
+  },
+  "devDependencies": {
     "smooth-scrollbar": "~1.0.0"
   }
 }
