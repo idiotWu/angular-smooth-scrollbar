@@ -65,7 +65,7 @@ bower install angular-smooth-scrollbar --save
 
 | parameter | default | description |
 | :--------: | :--: | :-----: | :----------: |
-| name | N/A | passed through `scrollbar` or `name` attribute, determine the name for this scrollbar instance. |
+| name | Date.now().toString(32) | passed through `scrollbar` or `name` attribute, determine the name for this scrollbar instance. |
 | speed | 1 | scrolling speed |
 | stepLength | 50 | how long each scrolling is (px/delta) |
 | easingDuration | 1000 | how long will easing takes after `touchend` event |
