@@ -34,7 +34,7 @@ bower install angular-smooth-scrollbar --save
 
     <script src="angular.js"></script>
     <script src="smooth-scrollbar/dist/smooth_scrollbar.js"></script>
-    <script src="angular-smooth-scrollbar/dist/index.js"></script>
+    <script src="angular-smooth-scrollbar/dist/angular-smooth-scrollbar.js"></script>
     ```
 
 2. Add `SmoothScrollbar` as dependency to your angular app:
