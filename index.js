@@ -1,5 +1,3 @@
-import SmoothScrollbar from 'smooth-scrollbar';
-
 angular.module('SmoothScrollbar', [])
     .service('ScrollbarService', class ScrollbarService{
         static $inject = ['$q'];
@@ -47,7 +45,7 @@ angular.module('SmoothScrollbar', [])
                 return scrollbarInstances[name];
             }
 
-            let instance = scrollbarInstances[name] = new SmoothScrollbar(elem, options);
+            let instance = scrollbarInstances[name] = new Scrollbar(elem, options);
 
             if (deferreds.hasOwnProperty(name)) {
                 deferreds[name].resolve(instance);
@@ -124,19 +122,19 @@ angular.module('SmoothScrollbar', [])
                 };
 
                 scrollbar.scrollTo = (x, y, duration, cb) => {
-                    original.scrollTo.call(x, y, duration, applyChange(cb));
+                    original.scrollTo(x, y, duration, applyChange(cb));
                 };
 
                 scrollbar.addListener = (cb) => {
                     if (typeof cb !== 'function') return;
 
-                    original.addListener.call(applyChange(cb));
+                    original.addListener(applyChange(cb));
                 };
 
                 scrollbar.infiniteScroll = (cb, threshold) => {
                     if (typeof cb !== 'function') return;
 
-                    original.infiniteScroll.call(applyChange(cb), threshold);
+                    original.infiniteScroll(applyChange(cb), threshold);
                 };
 
                 scope.$on('$destroy', () => {
