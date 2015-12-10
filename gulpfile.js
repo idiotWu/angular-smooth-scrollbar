@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var babel = require('gulp-babel');
 var eslint = require('gulp-eslint');
+var rename = require('gulp-rename');
 var wrapUMD = require('gulp-wrap-umd');
 var browserSync = require('browser-sync').create();
 var friendlyFormatter = require("eslint-friendly-formatter");
@@ -22,6 +23,9 @@ gulp.task('compile', function() {
                 globalName: 'Scrollbar',
                 paramName: 'Scrollbar'
             }]
+        }))
+        .pipe(rename({
+            basename: 'angular-smooth-scrollbar'
         }))
         .pipe(gulp.dest('dist'))
         .pipe(browserSync.stream())
