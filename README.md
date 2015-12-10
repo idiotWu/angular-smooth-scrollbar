@@ -1,12 +1,20 @@
 # angular-smooth-scrollbar
 
-An angular module that helps you to customize high performance scrollbar.
+[smooth-scrollbar](https://github.com/idiotWu/smooth-scrollbar) for angular projects.
 
 ## Requirements
 
 Angular 1.4+
 
 ## Install
+
+Via npm:
+
+```
+npm install angular-smooth-scrollbar --save
+```
+
+Or via bower:
 
 ```
 bower install angular-smooth-scrollbar --save
@@ -19,12 +27,14 @@ bower install angular-smooth-scrollbar --save
 
 ## Usage
 
-1. Include the script and stylesheet in your page file:
+1. Include all dependencies in your page file:
 
     ```html
-    <link rel="stylesheet" href="dist/angular-smooth-scrollbar.css">
+    <link rel="stylesheet" href="smooth-scrollbar/dist/smooth_scrollbar.css">
 
-    <script src="dist/angular-smooth-scrollbar.js"></script>
+    <script src="angular.js"></script>
+    <script src="smooth-scrollbar/dist/smooth_scrollbar.js"></script>
+    <script src="angular-smooth-scrollbar/dist/index.js"></script>
     ```
 
 2. Add `SmoothScrollbar` as dependency to your angular app:
