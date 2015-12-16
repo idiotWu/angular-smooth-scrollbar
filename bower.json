@@ -28,6 +28,6 @@
   ],
   "dependencies": {
     "angular": "~1.4.3",
-    "smooth-scrollbar": "~1.0.0"
+    "smooth-scrollbar": "^1.0.0"
   }
 }
