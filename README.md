@@ -63,13 +63,13 @@ bower install angular-smooth-scrollbar --save
 
 ### Available Options
 
-| parameter | default | description |
+| parameter | type | default | description |
 | :--------: | :--: | :-----: | :----------: |
-| name | Date.now().toString(32) | passed through `scrollbar` or `name` attribute, determine the name for this scrollbar instance. |
-| speed | 1 | scrolling speed |
-| stepLength | 50 | how long each scrolling is (px/delta) |
-| easingDuration | 1000 | how long will easing takes after `touchend` event |
-| easingCurve  | cubic-bezier(0.1, 0.57, 0.1, 1) | easing timing function, either css `timing-function` or pre-defined curves [here](http://easings.net/en)|
+| speed | Number | 1 | scrolling speed|
+| stepLength | Number | 50 | how long each scrolling is (px/delta) |
+| easingDuration | Number | 1000 | how long will easing takes after `touchend` event |
+| easingCurve | String | cubic-bezier(0.1, 0.57, 0.1, 1) | easing timing function, either css `timing-function` or pre-defined curves [here](http://easings.net) |
+| propagation | Boolean | true | event propagation |
 
 ## ScrollbarService
 
