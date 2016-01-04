@@ -88,18 +88,13 @@ angular.module('SmoothScrollbar', [])
                 speed: '@',
                 stepLength: '@',
                 easingDuration: '@',
-                easingCurve: '@'
+                easingCurve: '@',
+                propagation: '='
             },
             link(scope, elem, attrs) {
-                const { speed, stepLength, easingDuration, easingCurve } = scope;
                 const name = attrs.scrollbar || attrs.name || Date.now().toString(32);
 
-                let scrollbar = ScrollbarService.createInstance(name, elem[0], {
-                    speed,
-                    stepLength,
-                    easingDuration,
-                    easingCurve
-                });
+                const scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
 
                 let original = {
                     update: ::scrollbar.update,
