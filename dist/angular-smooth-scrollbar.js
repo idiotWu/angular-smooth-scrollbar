@@ -17,7 +17,7 @@ var _class, _temp;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-angular.module('SmoothScrollbar', []).service('ScrollbarService', (_temp = _class = (function () {
+angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.version).service('ScrollbarService', (_temp = _class = (function () {
     function ScrollbarService($q) {
         _classCallCheck(this, ScrollbarService);
 
@@ -72,7 +72,7 @@ angular.module('SmoothScrollbar', []).service('ScrollbarService', (_temp = _clas
                 return scrollbarInstances[name];
             }
 
-            var instance = scrollbarInstances[name] = new Scrollbar(elem, options);
+            var instance = scrollbarInstances[name] = Scrollbar.init(elem, options);
 
             if (deferreds.hasOwnProperty(name)) {
                 deferreds[name].resolve(instance);
@@ -109,7 +109,6 @@ angular.module('SmoothScrollbar', []).service('ScrollbarService', (_temp = _clas
     return {
         restrict: 'AE',
         transclude: true,
-        template: '\n                <article class="scroll-content" ng-transclude></article>\n                <aside class="scrollbar-track scrollbar-track-x">\n                    <div class="scrollbar-thumb scrollbar-thumb-x"></div>\n                </aside>\n                <aside class="scrollbar-track scrollbar-track-y">\n                    <div class="scrollbar-thumb scrollbar-thumb-y"></div>\n                </aside>\n            ',
         scope: {
             speed: '@',
             stepLength: '@',
@@ -117,7 +116,12 @@ angular.module('SmoothScrollbar', []).service('ScrollbarService', (_temp = _clas
             easingCurve: '@',
             propagation: '='
         },
-        link: function link(scope, elem, attrs) {
+        link: function link(scope, elem, attrs, ctrl, transclude) {
+            var speed = scope.speed;
+            var stepLength = scope.stepLength;
+            var easingDuration = scope.easingDuration;
+            var easingCurve = scope.easingCurve;
+
             var name = attrs.scrollbar || attrs.name || Date.now().toString(32);
 
             var scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
@@ -160,6 +164,12 @@ angular.module('SmoothScrollbar', []).service('ScrollbarService', (_temp = _clas
 
             scope.$on('$destroy', function () {
                 ScrollbarService.destroyInstance(name);
+            });
+
+            var $scrollContent = angular.element(scrollbar.targets.content);
+
+            transclude(function (clones) {
+                $scrollContent.append(clones);
             });
         }
     };
