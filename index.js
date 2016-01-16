@@ -1,4 +1,5 @@
 angular.module('SmoothScrollbar', [])
+    .constant('SCROLLBAR_VERSION', Scrollbar.version)
     .service('ScrollbarService', class ScrollbarService{
         static $inject = ['$q'];
 
@@ -45,7 +46,7 @@ angular.module('SmoothScrollbar', [])
                 return scrollbarInstances[name];
             }
 
-            let instance = scrollbarInstances[name] = new Scrollbar(elem, options);
+            let instance = scrollbarInstances[name] = Scrollbar.init(elem, options);
 
             if (deferreds.hasOwnProperty(name)) {
                 deferreds[name].resolve(instance);
@@ -75,15 +76,6 @@ angular.module('SmoothScrollbar', [])
         return {
             restrict: 'AE',
             transclude: true,
-            template: `
-                <article class="scroll-content" ng-transclude></article>
-                <aside class="scrollbar-track scrollbar-track-x">
-                    <div class="scrollbar-thumb scrollbar-thumb-x"></div>
-                </aside>
-                <aside class="scrollbar-track scrollbar-track-y">
-                    <div class="scrollbar-thumb scrollbar-thumb-y"></div>
-                </aside>
-            `,
             scope: {
                 speed: '@',
                 stepLength: '@',
@@ -91,7 +83,8 @@ angular.module('SmoothScrollbar', [])
                 easingCurve: '@',
                 propagation: '='
             },
-            link(scope, elem, attrs) {
+            link(scope, elem, attrs, ctrl, transclude) {
+                const { speed, stepLength, easingDuration, easingCurve } = scope;
                 const name = attrs.scrollbar || attrs.name || Date.now().toString(32);
 
                 const scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
@@ -134,6 +127,12 @@ angular.module('SmoothScrollbar', [])
 
                 scope.$on('$destroy', () => {
                     ScrollbarService.destroyInstance(name);
+                });
+
+                const $scrollContent = angular.element(scrollbar.targets.content);
+
+                transclude((clones) => {
+                    $scrollContent.append(clones);
                 });
             }
         };
