@@ -127,7 +127,6 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
             var scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
 
             var original = {
-                update: scrollbar.update.bind(scrollbar),
                 scrollTo: scrollbar.scrollTo.bind(scrollbar),
                 addListener: scrollbar.addListener.bind(scrollbar),
                 infiniteScroll: scrollbar.infiniteScroll.bind(scrollbar)
@@ -140,10 +139,6 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
                     cb.apply(undefined, arguments);
                     scope.$apply();
                 };
-            };
-
-            scrollbar.update = function (cb) {
-                original.update(applyChange(cb));
             };
 
             scrollbar.scrollTo = function (x, y, duration, cb) {
@@ -169,7 +164,7 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
             var $scrollContent = angular.element(scrollbar.targets.content);
 
             transclude(function (clones) {
-                // $scrollContent.append(clones);
+                $scrollContent.append(clones);
             }, $scrollContent);
         }
     };
