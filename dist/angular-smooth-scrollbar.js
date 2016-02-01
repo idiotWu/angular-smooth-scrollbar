@@ -169,8 +169,8 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
             var $scrollContent = angular.element(scrollbar.targets.content);
 
             transclude(function (clones) {
-                $scrollContent.append(clones);
-            });
+                // $scrollContent.append(clones);
+            }, $scrollContent);
         }
     };
 }]);

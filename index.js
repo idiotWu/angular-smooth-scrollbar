@@ -90,7 +90,6 @@ angular.module('SmoothScrollbar', [])
                 const scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
 
                 let original = {
-                    update: ::scrollbar.update,
                     scrollTo: ::scrollbar.scrollTo,
                     addListener: ::scrollbar.addListener,
                     infiniteScroll: ::scrollbar.infiniteScroll
@@ -103,10 +102,6 @@ angular.module('SmoothScrollbar', [])
                         cb(...args);
                         scope.$apply();
                     };
-                };
-
-                scrollbar.update = (cb) => {
-                    original.update(applyChange(cb));
                 };
 
                 scrollbar.scrollTo = (x, y, duration, cb) => {
@@ -133,7 +128,7 @@ angular.module('SmoothScrollbar', [])
 
                 transclude((clones) => {
                     $scrollContent.append(clones);
-                });
+                }, $scrollContent);
             }
         };
     }]);
