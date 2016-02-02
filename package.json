@@ -4,7 +4,7 @@
   "description": "An angular module that allows you customize smooth scrollbars",
   "main": "dist/angular-smooth-scrollbar.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp compile"
   },
   "repository": {
     "type": "git",
