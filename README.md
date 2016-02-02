@@ -1,5 +1,11 @@
 # angular-smooth-scrollbar
 
+[![npm](https://img.shields.io/npm/v/angular-smooth-scrollbar.svg?style=flat-square)](https://www.npmjs.com/package/angular-smooth-scrollbar)
+[![npm](https://img.shields.io/npm/l/angular-smooth-scrollbar.svg?style=flat-square)](https://www.npmjs.com/package/angular-smooth-scrollbar)
+[![devDependency Status](https://img.shields.io/david/dev/idiotWu/angular-smooth-scrollbar.svg?style=flat-square)](https://david-dm.org/idiotWu/angular-smooth-scrollbar#info=devDependencies)
+[![npm](https://img.shields.io/npm/dt/angular-smooth-scrollbar.svg?style=flat-square)](https://www.npmjs.com/package/angular-smooth-scrollbar)
+[![Travis](https://img.shields.io/travis/idiotWu/angular-smooth-scrollbar.svg)](https://travis-ci.org/idiotWu/angular-smooth-scrollbar)
+
 [smooth-scrollbar](https://github.com/idiotWu/smooth-scrollbar) for angular projects.
 
 ## Requirements
