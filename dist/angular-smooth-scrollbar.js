@@ -24,11 +24,12 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
         this.scrollbarInstances = {};
         this.deferreds = {};
         this.$q = $q;
+        this.id = 0;
     }
 
     /**
      * @method
-     * Generate a scrollbar name with timestamp
+     * Generate a scrollbar name with timestamp + id
      *
      * @return {String}
      */
@@ -36,7 +37,8 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
     _createClass(ScrollbarService, [{
         key: 'generateName',
         value: function generateName() {
-            return Date.now().toString(32);
+            this.id++;
+            return Date.now().toString(32) + '$' + this.id;
         }
 
         /**
