@@ -81,6 +81,10 @@ bower install angular-smooth-scrollbar --save
 
 By given scrollbar a name via attribute, you can access your scrollbar instances through `ScrollbarService`.
 
+## ScrollbarService.generateName()
+
+Return a timestamp string, this will be useful while trying naming scrollbars uniquely.
+
 ### ScrollbarService.getInstance( name )
 
 Get scrollbar instance by giving the name, and return a promise with instance.
