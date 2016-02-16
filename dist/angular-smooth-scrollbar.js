@@ -28,14 +28,29 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
 
     /**
      * @method
-     * Get scrollbar instance
-     * If instance isn't existed,
-     * callback wiil be invoked after instance is created
+     * Generate a scrollbar name with timestamp
      *
-     * @param {String} name: scrollbar name
+     * @return {String}
      */
 
     _createClass(ScrollbarService, [{
+        key: 'generateName',
+        value: function generateName() {
+            return Date.now().toString(32);
+        }
+
+        /**
+         * @method
+         * Get scrollbar instance
+         * If instance isn't existed,
+         * callback wiil be invoked after instance is created
+         *
+         * @param {String} name: scrollbar name
+         *
+         * @return {Promise} resolved with scrollbar<Scrollbar>
+         */
+
+    }, {
         key: 'getInstance',
         value: function getInstance(name) {
             var scrollbarInstances = this.scrollbarInstances;
@@ -122,7 +137,7 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
             var easingDuration = scope.easingDuration;
             var easingCurve = scope.easingCurve;
 
-            var name = attrs.scrollbar || attrs.name || Date.now().toString(32);
+            var name = attrs.scrollbar || attrs.name || ScrollbarService.generateName();
 
             var scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
 
