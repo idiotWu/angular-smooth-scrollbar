@@ -11,11 +11,23 @@ angular.module('SmoothScrollbar', [])
 
         /**
          * @method
+         * Generate a scrollbar name with timestamp
+         *
+         * @return {String}
+         */
+        generateName() {
+            return Date.now().toString(32);
+        }
+
+        /**
+         * @method
          * Get scrollbar instance
          * If instance isn't existed,
          * callback wiil be invoked after instance is created
          *
          * @param {String} name: scrollbar name
+         *
+         * @return {Promise} resolved with scrollbar<Scrollbar>
          */
         getInstance(name) {
             const { scrollbarInstances, deferreds, $q } = this;
@@ -85,7 +97,7 @@ angular.module('SmoothScrollbar', [])
             },
             link(scope, elem, attrs, ctrl, transclude) {
                 const { speed, stepLength, easingDuration, easingCurve } = scope;
-                const name = attrs.scrollbar || attrs.name || Date.now().toString(32);
+                const name = attrs.scrollbar || attrs.name || ScrollbarService.generateName();
 
                 const scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
 
