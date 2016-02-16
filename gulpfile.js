@@ -46,4 +46,6 @@ gulp.task('serve', ['compile', 'lint'], function() {
     gulp.watch('test/*.*').on('change', browserSync.reload);
 });
 
+gulp.task('release', ['compile']);
+
 gulp.task('default', ['serve']);
