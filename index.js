@@ -92,16 +92,17 @@ angular.module('SmoothScrollbar', [])
             transclude: true,
             scope: {
                 speed: '@',
-                stepLength: '@',
-                easingDuration: '@',
-                easingCurve: '@',
-                propagation: '='
+                fricton: '@',
+                inflection: '@',
+                sensitivity: '@'
             },
             link(scope, elem, attrs, ctrl, transclude) {
-                const { speed, stepLength, easingDuration, easingCurve } = scope;
+                const { speed, fricton, inflection, sensitivity } = scope;
                 const name = attrs.scrollbar || attrs.name || ScrollbarService.generateName();
 
-                const scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
+                const scrollbar = ScrollbarService.createInstance(name, elem[0], {
+                    speed, fricton, inflection, sensitivity
+                });
 
                 let original = {
                     scrollTo: ::scrollbar.scrollTo,

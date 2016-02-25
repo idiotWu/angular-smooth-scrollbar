@@ -1,6 +1,6 @@
 {
   "name": "angular-smooth-scrollbar",
-  "version": "2.3.1",
+  "version": "3.0.0",
   "authors": [
     "Dolphin Wood <dolphin.w.e@gmail.com>"
   ],
@@ -28,6 +28,6 @@
   ],
   "dependencies": {
     "angular": "~1.4.3",
-    "smooth-scrollbar": "^1.4.1"
+    "smooth-scrollbar": "^3.0.0"
   }
 }

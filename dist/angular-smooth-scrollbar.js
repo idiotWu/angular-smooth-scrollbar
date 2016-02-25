@@ -128,20 +128,21 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
         transclude: true,
         scope: {
             speed: '@',
-            stepLength: '@',
-            easingDuration: '@',
-            easingCurve: '@',
-            propagation: '='
+            fricton: '@',
+            inflection: '@',
+            sensitivity: '@'
         },
         link: function link(scope, elem, attrs, ctrl, transclude) {
             var speed = scope.speed;
-            var stepLength = scope.stepLength;
-            var easingDuration = scope.easingDuration;
-            var easingCurve = scope.easingCurve;
+            var fricton = scope.fricton;
+            var inflection = scope.inflection;
+            var sensitivity = scope.sensitivity;
 
             var name = attrs.scrollbar || attrs.name || ScrollbarService.generateName();
 
-            var scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
+            var scrollbar = ScrollbarService.createInstance(name, elem[0], {
+                speed: speed, fricton: fricton, inflection: inflection, sensitivity: sensitivity
+            });
 
             var original = {
                 scrollTo: scrollbar.scrollTo.bind(scrollbar),
