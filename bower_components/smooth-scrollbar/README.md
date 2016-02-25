@@ -1,5 +1,11 @@
 # smooth-scrollbar
 
+[![npm](https://img.shields.io/npm/v/smooth-scrollbar.svg?style=flat-square)](https://www.npmjs.com/package/smooth-scrollbar)
+[![npm](https://img.shields.io/npm/l/smooth-scrollbar.svg?style=flat-square)](https://www.npmjs.com/package/smooth-scrollbar)
+[![devDependency Status](https://img.shields.io/david/dev/idiotWu/smooth-scrollbar.svg?style=flat-square)](https://david-dm.org/idiotWu/smooth-scrollbar#info=devDependencies)
+[![npm](https://img.shields.io/npm/dt/smooth-scrollbar.svg?style=flat-square)](https://www.npmjs.com/package/smooth-scrollbar)
+[![Travis](https://img.shields.io/travis/idiotWu/smooth-scrollbar.svg)](https://travis-ci.org/idiotWu/smooth-scrollbar)
+
 Customize scrollbar in modern browsers with smooth scrolling experience.
 
 ## Browser Compatibility
@@ -16,8 +22,16 @@ Customize scrollbar in modern browsers with smooth scrolling experience.
 
 ## Install
 
+Via npm:
+
 ```
-bower install angular-smooth-scrollbar --save
+npm install smooth-scrollbar --save
+```
+
+Via bower:
+
+```
+bower install smooth-scrollbar --save
 ```
 
 
@@ -89,10 +103,10 @@ Or you can call `Scrollbar.init(elem, options)` to manually init the scrollbar.
 
 | parameter | type | default | description |
 | :--------: | :--: | :-----: | :----------: |
-| speed | Number | 1 | scrolling speed|
-| stepLength | Number | 50 | how long each scrolling is (px/delta) |
-| easingDuration | Number | 1000 | how long will easing takes after `touchend` event |
-| easingCurve | String | cubic-bezier(0.1, 0.57, 0.1, 1) | easing timing function, either css `timing-function` or pre-defined curves [here](http://easings.net/en)|
+| speed | Number | 1 | Scrolling speed scale.|
+| fricton | Number | 10 | Scrolling fricton, a percentage value within (1, 100) |
+
+Confusing with the option field? Try editor tool [here](http://idiotwu.github.io/smooth-scrollbar/)!
 
 ## DOM Structure
 Following is the DOM structure that Scrollbar generated:
@@ -128,7 +142,7 @@ Following is the DOM structure that Scrollbar generated:
 
 ### Instance
 
-- [instance#update( [callback] )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instanceupdate-callback-)
+- [instance#update( [async] )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instanceupdate-async-)
 - [instance#getSize()](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancegetsize)
 - [instance#setPosition( x, y )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancesetposition-x-y-)
 - [instance#scrollTo( x, y, [duration], [callback] )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancescrollto-x-y-duration-callback-)
@@ -140,6 +154,30 @@ Following is the DOM structure that Scrollbar generated:
 - [instance#showTrack( direction )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instanceshowtrack-direction-)
 - [instance#hideTrack()](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancehidetrack)
 
+## Work with [RubaXa/Sortable](https://github.com/RubaXa/Sortable)
+
+Details [here](https://github.com/idiotWu/smooth-scrollbar/wiki/Work-with-RubaXa-Sortable).
+
+## Related
+
+- [angular-smooth-scrollbar](https://github.com/idiotWu/angular-smooth-scrollbar)
+- [react-smooth-scrollbar](https://github.com/idiotWu/react-smooth-scrollbar)
+
+## Changelog
+
+### 4.0.0
+
+- Movement based scrolling algrithm.
+- Reduce options, simple is better :)
+
+### 3.1.0
+
+- Use quadratic curve to perform `scrollTo` method.
+
+### 3.0.0
+
+- New easing algrithm.
+- Dependencies free!
 
 ## License
 

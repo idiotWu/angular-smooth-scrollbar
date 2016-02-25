@@ -1,70 +1,75 @@
 /**
  * @module
  * @prototype {Function} __touchHandler
- * @dependencies [ SmoothScrollbar, #scrollTo, #setPosition, getOriginalEvent, getPosition, getTouchID, pickInRange ]
  */
 
-import '../apis/scroll_to';
-import '../apis/set_position';
 import { SmoothScrollbar } from '../smooth_scrollbar';
-import { getOriginalEvent, getPosition, getTouchID, pickInRange } from '../utils/index';
+import {
+    getOriginalEvent,
+    getPosition,
+    getTouchID,
+    pickInRange
+} from '../utils/index';
 
 export { SmoothScrollbar };
+
+const EASING_DURATION = navigator.userAgent.match(/android/i) ? 1500 : 750;
 
 /**
  * @method
  * @internal
- * Touch event handlers builder,
- * include `touchstart`, `touchmove` and `touchend`
- *
- * @param {Object} option
- *
- * @return {Object}: a set of event handlers
+ * Touch event handlers builder
  */
-let __touchHandler = function({ easingDuration }) {
-    let { container } = this.targets;
+let __touchHandler = function() {
+    const { container } = this.targets;
 
     let lastTouchTime, lastTouchID;
     let moveVelocity = {}, lastTouchPos = {}, touchRecords = {};
 
     let updateRecords = (evt) => {
-        let touchList = getOriginalEvent(evt).touches;
+        const touchList = getOriginalEvent(evt).touches;
 
         Object.keys(touchList).forEach((key) => {
             // record all touches that will be restored
             if (key === 'length') return;
 
-            let touch = touchList[key];
+            const touch = touchList[key];
 
             touchRecords[touch.identifier] = getPosition(touch);
         });
     };
 
-    this.$on('touchstart', container, (evt) => {
-        cancelAnimationFrame(this.scrollAnimation);
+    this.__addEvent(container, 'touchstart', (evt) => {
+        if (this.__isDrag) return;
+
+        const { movement } = this;
+
         updateRecords(evt);
 
+        lastTouchTime = Date.now();
         lastTouchID = getTouchID(evt);
         lastTouchPos = getPosition(evt);
-        lastTouchTime = (new Date()).getTime();
+
+        // stop scrolling
+        movement.x = movement.y = 0;
         moveVelocity.x = moveVelocity.y = 0;
     });
 
-    this.$on('touchmove', container, (evt) => {
-        if (this.__fromChild(evt)) return;
+    this.__addEvent(container, 'touchmove', (evt) => {
+        if (this.__ignoreEvent(evt) || this.__isDrag) return;
 
         updateRecords(evt);
 
-        let touchID = getTouchID(evt);
-        let { offset, limit } = this;
+        const touchID = getTouchID(evt);
+        const { offset, limit } = this;
 
         if (lastTouchID === undefined) {
             // reset last touch info from records
             lastTouchID = touchID;
 
             // don't need error handler
+            lastTouchTime = Date.now();
             lastTouchPos = touchRecords[touchID];
-            lastTouchTime = (new Date()).getTime();
         } else if (touchID !== lastTouchID) {
             // prevent multi-touch bouncing
             return;
@@ -72,7 +77,7 @@ let __touchHandler = function({ easingDuration }) {
 
         if (!lastTouchPos) return;
 
-        let duration = (new Date()).getTime() - lastTouchTime;
+        let duration = Date.now() - lastTouchTime;
         let { x: lastX, y: lastY } = lastTouchPos;
         let { x: curX, y: curY } = lastTouchPos = getPosition(evt);
 
@@ -90,28 +95,19 @@ let __touchHandler = function({ easingDuration }) {
 
         evt.preventDefault();
 
-        // don't need easing too
         this.setPosition(destX, destY);
     });
 
-    this.$on('touchend', container, (evt) => {
-        if (this.__fromChild(evt)) return;
+    this.__addEvent(container, 'touchend', (evt) => {
+        if (this.__ignoreEvent(evt) || this.__isDrag) return;
 
         // release current touch
         delete touchRecords[lastTouchID];
         lastTouchID = undefined;
 
         let { x, y } = moveVelocity;
-        let threshold = 10 / 1e3; // 10 px/s
 
-        if (Math.abs(x) > threshold ||
-            Math.abs(y) > threshold) {
-            this.scrollTo(
-                x * easingDuration + this.offset.x,
-                y * easingDuration + this.offset.y,
-                easingDuration
-            );
-        }
+        this.__addMovement(x * EASING_DURATION, y * EASING_DURATION);
 
         moveVelocity.x = moveVelocity.y = 0;
     });

@@ -1,12 +1,8 @@
 /**
  * @module
  * @prototype {Function} __mouseHandler
- * @dependencies [ SmoothScrollbar, #getSize, #scrollTo, #setPosition, getPosition, getTouchID, pickInRange ]
  */
 
-import '../apis/get_size';
-import '../apis/scroll_to';
-import '../apis/set_position';
 import { SmoothScrollbar } from '../smooth_scrollbar';
 import { getPosition, getTouchID, pickInRange } from '../utils/index';
 
@@ -26,17 +22,16 @@ let getTrackDir = (className) => {
 /**
  * @method
  * @internal
- * Mouse event handlers builder,
- * include `click`, `mousedown`, `mousemove` and `mouseup`
+ * Mouse event handlers builder
  *
  * @param {Object} option
  */
-let __mouseHandler = function({ speed }) {
+let __mouseHandler = function() {
     let isMouseDown, isMouseMove, startOffsetToThumb, startTrackDirection, containerRect;
     let { container } = this.targets;
 
-    this.$on('click', container, (evt) => {
-        if (isMouseMove || !/track/.test(evt.target.className) || this.__fromChild(evt)) return;
+    this.__addEvent(container, 'click', (evt) => {
+        if (isMouseMove || !/track/.test(evt.target.className) || this.__ignoreEvent(evt)) return;
 
         let track = evt.target;
         let direction = getTrackDir(track.className);
@@ -44,7 +39,6 @@ let __mouseHandler = function({ speed }) {
         let clickPos = getPosition(evt);
 
         let { size, offset } = this;
-        let duration = 1e3 / speed;
 
         if (direction === 'x') {
             // use percentage value
@@ -54,7 +48,7 @@ let __mouseHandler = function({ speed }) {
             return this.scrollTo(
                 (clickOffset - thumbSize / 2) * size.content.width,
                 offset.y,
-                duration
+                1e3
             );
         }
 
@@ -64,12 +58,12 @@ let __mouseHandler = function({ speed }) {
         this.scrollTo(
             offset.x,
             (clickOffset - thumbSize / 2) * size.content.height,
-            duration
+            1e3
         );
     });
 
-    this.$on('mousedown', container, (evt) => {
-        if (!/thumb/.test(evt.target.className) || this.__fromChild(evt)) return;
+    this.__addEvent(container, 'mousedown', (evt) => {
+        if (!/thumb/.test(evt.target.className) || this.__ignoreEvent(evt)) return;
         isMouseDown = true;
 
         let cursorPos = getPosition(evt);
@@ -87,7 +81,7 @@ let __mouseHandler = function({ speed }) {
         containerRect = this.targets.container.getBoundingClientRect();
     });
 
-    this.$on('mousemove', window, (evt) => {
+    this.__addEvent(window, 'mousemove', (evt) => {
         if (!isMouseDown) return;
 
         isMouseMove = true;
@@ -115,7 +109,7 @@ let __mouseHandler = function({ speed }) {
     });
 
     // release mousemove spy on window lost focus
-    this.$on('mouseup blur', window, () => {
+    this.__addEvent(window, 'mouseup blur', () => {
         isMouseDown = isMouseMove = false;
     });
 };

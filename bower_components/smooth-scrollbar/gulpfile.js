@@ -1,3 +1,4 @@
+var fs = require('fs');
 var gulp = require('gulp');
 var util = require('gulp-util');
 var stylus = require('gulp-stylus');
@@ -8,14 +9,12 @@ var sizereport = require('gulp-sizereport');
 var autoprefixer = require('gulp-autoprefixer');
 var browserSync = require('browser-sync').create();
 
-var compile = function(watch, done) {
+var getVersion = function() {
+    return JSON.parse(fs.readFileSync('./package.json').toString()).version;
+};
+
+var compile = function(isServeTask, done) {
     var options = {
-        watch: watch,
-        output: {
-            filename: 'smooth_scrollbar.js',
-            library: 'Scrollbar',
-            libraryTarget: 'umd'
-        },
         module: {
             preLoaders: [{
                 test: /\.js$/,
@@ -30,8 +29,18 @@ var compile = function(watch, done) {
         }
     };
 
-    if (watch) {
+    if (isServeTask) {
+        options.watch = true;
         options.devtool = 'inline-source-map';
+        options.output = {
+            filename: 'app.js'
+        };
+    } else {
+        options.output = {
+            filename: 'smooth-scrollbar.js',
+            library: 'Scrollbar',
+            libraryTarget: 'umd'
+        };
     }
 
     return webpack(options, null, function(err, stats) {
@@ -46,68 +55,59 @@ var compile = function(watch, done) {
 
         browserSync.reload();
 
-        if (watch) {
-            watch = false;
+        if (isServeTask) {
+            isServeTask = false;
             done();
         }
     });
 };
 
-gulp.task('scripts:watch', function(done) {
-    return gulp.src('src/index.js')
+gulp.task('scripts:build', function(done) {
+    return gulp.src('test/scripts/index.js')
         .pipe(compile(true, done))
+        .pipe(replace(/<%= version %>/, getVersion()))
         .pipe(gulp.dest('build/'));
 });
 
-gulp.task('scripts:build', function() {
+gulp.task('scripts:dist', function() {
     return gulp.src('src/index.js')
         .pipe(compile(false))
-        .pipe(gulp.dest('build/'));
+        .pipe(replace(/<%= version %>/, getVersion()))
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('styles:build', function() {
-    return gulp.src('src/style/*.styl')
+    return gulp.src('test/styles/index.styl')
         .pipe(stylus())
         .pipe(autoprefixer('> 1%, last 2 versions, Firefox ESR, Opera 12.1, ie >= 10'))
         .pipe(gulp.dest('build/'))
         .pipe(browserSync.stream());
 });
 
-gulp.task('scripts:release', ['scripts:build'], function() {
-    return gulp.src('src/index.js')
-        .pipe(compile(false))
-        .pipe(uglify())
+gulp.task('styles:dist', function() {
+    return gulp.src('src/style/*.styl')
+        .pipe(stylus())
+        .pipe(autoprefixer('> 1%, last 2 versions, Firefox ESR, Opera 12.1, ie >= 10'))
         .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('styles:release', ['styles:build'], function() {
-    return gulp.src('build/**/*.css')
-        .pipe(gulp.dest('dist/'));
-});
-
-gulp.task('replace', function() {
-    return gulp.src('test/index.html')
-        .pipe(replace(/build/g, 'dist'))
-        .pipe(gulp.dest('demo/'));
-});
-
-gulp.task('serve', ['scripts:watch', 'styles:build'], function() {
+gulp.task('serve', ['scripts:build', 'styles:build'], function() {
     browserSync.init({
-        server: ['./test', '.']
+        server: ['./test', '.'],
+        routes: {
+            '/build': 'build',
+            '/bower_components': 'bower_components'
+        }
     });
 
-    gulp.watch('src/style/*.styl', ['styles:build']);
-    gulp.watch('test/*.*').on('change', browserSync.reload);
+    gulp.watch('test/styles/*.styl', ['styles:build']);
+    gulp.watch('test/**/*.html').on('change', browserSync.reload);
 });
 
-gulp.task('copy:release', function() {
-    return gulp.src(['test/**/*.*', '!test/**/*.html'])
-        .pipe(gulp.dest('demo/'));
-});
-
-gulp.task('release', ['scripts:release', 'styles:release', 'replace', 'copy:release'], function() {
+gulp.task('dist', ['scripts:dist', 'styles:dist'], function() {
     return gulp.src('dist/**/*.*')
         .pipe(sizereport());
 });
 
-gulp.task('default', ['release']);
+gulp.task('default', ['dist']);

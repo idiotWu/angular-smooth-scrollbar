@@ -1,11 +1,8 @@
 /**
  * @module
  * @prototype {Function} update
- * @dependencies [ SmoothScrollbar, #getSize, #__setThumbPosition, #__readyonly pickInRange, setStyle ]
  */
 
-import './get_size';
-import '../internals';
 import { pickInRange, setStyle } from '../utils/index';
 import { SmoothScrollbar } from '../smooth_scrollbar';
 
@@ -14,12 +11,14 @@ export { SmoothScrollbar };
 /**
  * @method
  * @api
- * Update scrollbars appearance in next animation frame
+ * Update scrollbars appearance
  *
- * @param {Function} cb: callback
+ * @param {Boolean} async: update asynchronous
  */
-SmoothScrollbar.prototype.update = function(cb) {
-    requestAnimationFrame(() => {
+SmoothScrollbar.prototype.update = function(async = true) {
+    let update = () => {
+        this.__updateBounding();
+
         let size = this.getSize();
 
         this.__readonly('size', size);
@@ -54,7 +53,11 @@ SmoothScrollbar.prototype.update = function(cb) {
         });
 
         this.__setThumbPosition();
+    };
 
-        if (typeof cb === 'function') cb(this);
-    });
+    if (async) {
+        requestAnimationFrame(update);
+    } else {
+        update();
+    }
 };

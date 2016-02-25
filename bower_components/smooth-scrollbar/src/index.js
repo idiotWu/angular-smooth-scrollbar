@@ -7,6 +7,8 @@ import './internals/index';
 
 export default SmoothScrollbar;
 
+SmoothScrollbar.version = '<%= version %>';
+
 /**
  * init scrollbar on given element
  *
@@ -26,7 +28,9 @@ SmoothScrollbar.init = (elem, options) => {
 
     const children = [...elem.children];
 
-    elem.innerHTML = `
+    const div = document.createElement('div');
+
+    div.innerHTML = `
         <article class="scroll-content"></article>
         <aside class="scrollbar-track scrollbar-track-x">
             <div class="scrollbar-thumb scrollbar-thumb-x"></div>
@@ -36,9 +40,11 @@ SmoothScrollbar.init = (elem, options) => {
         </aside>
     `;
 
-    const content = elem.querySelector('.scroll-content');
+    const scrollContent = div.querySelector('.scroll-content');
 
-    children.forEach((el) => content.appendChild(el));
+    [...div.children].forEach((el) => elem.appendChild(el));
+
+    children.forEach((el) => scrollContent.appendChild(el));
 
     return new SmoothScrollbar(elem, options);
 };

@@ -1,26 +1,25 @@
 /**
  * @module
  * @export {Class} SmoothScrollbar
- * @dependencies [ DEFAULT_OPTIONS, motionBuilder, debounce, findChild ]
  */
 
-import { motionBuilder, debounce, findChild, setStyle } from './utils/index';
-import { DEFAULT_OPTIONS } from './shared/options';
+import { DEFAULT_OPTIONS } from './options';
 import { sbList } from './shared/sb_list';
+import {
+    debounce,
+    findChild,
+    setStyle
+} from './utils/index';
 
 /**
  * @constructor
  * Create scrollbar instance
  *
  * @param {Element} container: target element
- * @param {Object} [options]: options, include four propertier:
- *          {Number} [speed]: scrolling speed, default is 1
- *          {Number} [stepLength]: scroll length per delta/keydown, default is 50
- *          {Number} [easingDuration]: swipe easing duration, default is 1000(ms)
- *          {String} [easingCurve]: easing timing function, defalut is cubic-bezier(0.1, 0.57, 0.1, 1)
+ * @param {Object} [options]: options
  */
 export class SmoothScrollbar {
-    constructor(container, { speed, stepLength, easingDuration, easingCurve } = {}) {
+    constructor(container, options = {}) {
         sbList.set(container, this);
 
         // make container focusable
@@ -58,13 +57,15 @@ export class SmoothScrollbar {
             x: Infinity,
             y: Infinity
         })
-        .__readonly('size', this.getSize());
+        .__readonly('movement', {
+            x: 0,
+            y: 0
+        })
+        .__readonly('size', this.getSize())
+        .__readonly('options', Object.assign({}, DEFAULT_OPTIONS));
 
         // non-enmurable properties
         Object.defineProperties(this, {
-            __motionBuilder: {
-                value: motionBuilder(easingCurve)
-            },
             __updateThrottle: {
                 value: debounce(::this.update)
             },
@@ -82,10 +83,7 @@ export class SmoothScrollbar {
             }
         });
 
-        this.__initScrollbar({
-            speed: parseFloat(speed) || DEFAULT_OPTIONS.SPEED,
-            stepLength: parseFloat(stepLength) || DEFAULT_OPTIONS.STEP_LENGTH,
-            easingDuration: parseFloat(easingDuration) || DEFAULT_OPTIONS.EASING_DURATION
-        });
+        this.setOptions(options);
+        this.__initScrollbar();
     }
 }

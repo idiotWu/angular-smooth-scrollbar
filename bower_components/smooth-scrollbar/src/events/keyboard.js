@@ -1,10 +1,8 @@
 /**
  * @module
  * @prototype {Function} __keyboardHandler
- * @dependencies [ SmoothScrollbar, #scrollTo, getOriginalEvent, pickInRange ]
  */
 
-import '../apis/scroll_to';
 import { getOriginalEvent, pickInRange } from '../utils/index';
 import { SmoothScrollbar } from '../smooth_scrollbar';
 
@@ -25,41 +23,33 @@ const KEYMAPS = {
  *
  * @param {Object} option
  */
-let __keyboardHandler = function({ speed, stepLength }) {
+let __keyboardHandler = function() {
+    const { container } = this.targets;
     let isFocused = false;
-    let { container } = this.targets;
 
-    this.$on('focus', container, () => {
+    this.__addEvent(container, 'focus', () => {
         isFocused = true;
     });
 
-    this.$on('blur', container, () => {
+    this.__addEvent(container, 'blur', () => {
         isFocused = false;
     });
 
-    this.$on('keydown', container, (evt) => {
+    this.__addEvent(container, 'keydown', (evt) => {
         if (!isFocused) return;
 
         evt = getOriginalEvent(evt);
 
-        let keyCode = evt.keyCode || evt.which;
+        const keyCode = evt.keyCode || evt.which;
 
         if (!KEYMAPS.hasOwnProperty(keyCode)) return;
 
-        let { offset, limit } = this;
-        let [x, y] = KEYMAPS[keyCode];
-
-        let destX = pickInRange(x * speed * stepLength + offset.x, 0, limit.x);
-        let destY = pickInRange(y * speed * stepLength + offset.y, 0, limit.y);
-
-        // if has scrolled to edge
-        if (Math.abs(destX - offset.x) < 1 && Math.abs(destY - offset.y) < 1) {
-            return this.__updateThrottle();
-        }
-
         evt.preventDefault();
 
-        this.scrollTo(destX, destY, 600 / speed);
+        const { speed } = this.options;
+        const [x, y] = KEYMAPS[keyCode];
+
+        this.__speedUp(x * speed * 10, y * speed * 10);
     });
 };
 

@@ -1,10 +1,8 @@
 /**
  * @module
  * @prototype {Function} setPosition
- * @dependencies [ SmoothScrollbar, #__updateThrottle, #__setThumbPosition, pickInRange, setStyle ]
  */
 
-import '../internals/set_thumb_position';
 import { pickInRange, setStyle } from '../utils/index';
 import { SmoothScrollbar } from '../smooth_scrollbar';
 
@@ -19,11 +17,10 @@ export { SmoothScrollbar };
  * @param {Number} [y]: scrollbar position in y axis
  */
 SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.offset.y) {
-    cancelAnimationFrame(this.__timerID.scrollAnimation);
     this.__updateThrottle();
 
-    let status = {};
-    let { offset, limit, targets, __listeners } = this;
+    const status = {};
+    const { offset, limit, targets, __listeners } = this;
 
     if (Math.abs(x - offset.x) > 1) this.showTrack('x');
     if (Math.abs(y - offset.y) > 1) this.showTrack('y');
@@ -49,7 +46,7 @@ SmoothScrollbar.prototype.setPosition = function(x = this.offset.x, y = this.off
     // reset thumb position after offset update
     this.__setThumbPosition();
 
-    let style = `translate3d(${-x}px, ${-y}px, 0)`;
+    const style = `translate3d(${-x}px, ${-y}px, 0)`;
 
     setStyle(targets.content, {
         '-webkit-transform': style,

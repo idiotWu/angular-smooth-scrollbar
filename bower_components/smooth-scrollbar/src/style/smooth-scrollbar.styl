@@ -6,8 +6,7 @@ scrollbar
 [data-scrollbar]
   display: block
   position: relative
-  overflow: hidden
-  user-select: none
+  overflow: scroll
 
   .scroll-content
     transform: translate3d(0, 0, 0)
@@ -16,6 +15,9 @@ scrollbar
   &.scrolling
     .scroll-content
       pointer-events: none
+
+      .scroll-content
+        pointer-events: auto
 
   .scrollbar-track
     position: absolute

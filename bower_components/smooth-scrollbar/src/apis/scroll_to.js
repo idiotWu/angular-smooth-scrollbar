@@ -1,11 +1,9 @@
 /**
  * @module
  * @prototype {Function} scrollTo
- * @dependencies [ SmoothScrollbar, #showTrack, #hideTrack, pickInRange ]
  */
 
-import './set_position';
-import { pickInRange } from '../utils/index';
+import { pickInRange, buildCurve } from '../utils/index';
 import { SmoothScrollbar } from '../smooth_scrollbar';
 
 export { SmoothScrollbar };
@@ -21,29 +19,42 @@ export { SmoothScrollbar };
  * @param {Function} [cb]: callback
  */
 SmoothScrollbar.prototype.scrollTo = function(x = this.offset.x, y = this.offset.y, duration = 0, cb = null) {
-    let { offset, limit, __timerID } = this;
-    let destX = pickInRange(x, 0, limit.x);
-    let destY = pickInRange(y, 0, limit.y);
+    const {
+        options,
+        offset,
+        limit,
+        velocity,
+        __timerID
+    } = this;
 
-    if (destX === offset.x && destY === offset.y) return;
+    cancelAnimationFrame(__timerID.scrollTo);
+    cb = typeof cb === 'function' ? cb : () => {};
 
-    let frames = {
-        x: this.__motionBuilder(offset.x, destX - offset.x, duration),
-        y: this.__motionBuilder(offset.y, destY - offset.y, duration)
-    };
+    const startX = offset.x;
+    const startY = offset.y;
 
-    let i = 0, length = frames.x.length;
+    const disX = pickInRange(x, 0, limit.x) - startX;
+    const disY = pickInRange(y, 0, limit.y) - startY;
+
+    const curveX = buildCurve(disX, duration);
+    const curveY = buildCurve(disY, duration);
+
+    let frame = 0, totalFrame = curveX.length;
 
     let scroll = () => {
-        if (i === length) {
-            return typeof cb === 'function' && cb(this);
+        if (frame === totalFrame) {
+            this.setPosition(x, y);
+
+            return requestAnimationFrame(() => {
+                cb(this);
+            });
         }
 
-        this.setPosition(frames.x[i], frames.y[i]);
+        this.setPosition(startX + curveX[frame], startY + curveY[frame]);
 
-        i++;
+        frame++;
 
-        __timerID.scrollAnimation = requestAnimationFrame(scroll);
+        __timerID.scrollTo = requestAnimationFrame(scroll);
     };
 
     scroll();
