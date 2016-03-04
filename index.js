@@ -10,7 +10,7 @@ angular.module('SmoothScrollbar', [])
         const deferreds = {};
 
         this.setDefaultOptions = (opt = {}) => {
-            return Object.assign(DEFAULT_OPTIONS, opt);
+            return angular.extend(DEFAULT_OPTIONS, opt);
         };
 
         let id = 0;
@@ -100,7 +100,7 @@ angular.module('SmoothScrollbar', [])
             }
 
             return new ScrollbarService();
-        }]
+        }];
     })
     .directive('scrollbar', ['ScrollbarService', (ScrollbarService) => {
         return {
