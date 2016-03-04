@@ -76,6 +76,21 @@ bower install angular-smooth-scrollbar --save
 
 Confusing with the option field? Try editor tool [here](http://idiotwu.github.io/smooth-scrollbar/)!
 
+## ScrollbarServiceProvider
+
+You can configure default scrollbar behavior here:
+
+```javascript
+angular.module('myApp', ['SmoothScrollbar'])
+.config((ScrollbarServiceProvider) => {
+    // set default scrollbar behavior
+});
+```
+
+### ScrollbarServiceProvider.setDefaultOptions( options )
+
+Set default scrollbar options for your angular app.
+
 
 ## ScrollbarService
 
