@@ -1,90 +1,106 @@
 angular.module('SmoothScrollbar', [])
     .constant('SCROLLBAR_VERSION', Scrollbar.version)
-    .service('ScrollbarService', class ScrollbarService{
-        static $inject = ['$q'];
+    .provider('ScrollbarService', function ScrollbarServiceProvider() {
+        const DEFAULT_OPTIONS = {
+            speed: 1,
+            fricton: 10
+        };
 
-        constructor($q) {
-            this.scrollbarInstances = {};
-            this.deferreds = {};
-            this.$q = $q;
-            this.id = 0;
-        }
+        const scrollbarInstances = {};
+        const deferreds = {};
 
-        /**
-         * @method
-         * Generate a scrollbar name with timestamp + id
-         *
-         * @return {String}
-         */
-        generateName() {
-            this.id++;
-            return Date.now().toString(32) + '$' + this.id;
-        }
+        this.setDefaultOptions = (opt = {}) => {
+            return Object.assign(DEFAULT_OPTIONS, opt);
+        };
 
-        /**
-         * @method
-         * Get scrollbar instance
-         * If instance isn't existed,
-         * callback wiil be invoked after instance is created
-         *
-         * @param {String} name: scrollbar name
-         *
-         * @return {Promise} resolved with scrollbar<Scrollbar>
-         */
-        getInstance(name) {
-            const { scrollbarInstances, deferreds, $q } = this;
+        let id = 0;
 
-            if (scrollbarInstances.hasOwnProperty(name)) {
-                return ($q.resolve || $q.when)(scrollbarInstances[name]);
+        this.$get = ['$q', function ($q) {
+            class ScrollbarService{
+                constructor() {
+                    this.id = 0;
+                }
+
+                /**
+                 * @method
+                 * Generate a scrollbar name with timestamp + id
+                 *
+                 * @return {String}
+                 */
+                generateName() {
+                    this.id++;
+                    return Date.now().toString(32) + '$' + this.id;
+                }
+
+                /**
+                 * @method
+                 * Get scrollbar instance
+                 * If instance isn't existed,
+                 * callback wiil be invoked after instance is created
+                 *
+                 * @param {String} name: scrollbar name
+                 *
+                 * @return {Promise} resolved with scrollbar<Scrollbar>
+                 */
+                getInstance(name) {
+                    let deferred = deferreds[name] = deferreds[name] || $q.defer();
+
+                    if (scrollbarInstances.hasOwnProperty(name)) {
+                        deferred.resolve(scrollbarInstances[name]);
+                    }
+
+                    return deferred.promise;
+                }
+
+                /**
+                 * @method
+                 * Create scrollbar instance
+                 *
+                 * @param {String} name: scrollbar name
+                 * @param {Element} elem: container element
+                 * @param {Object} options: as is explained in scrollbar constructor
+                 *
+                 * @return {Scrollbar} scrollbar instance
+                 */
+                createInstance(name, elem, options) {
+                    if (scrollbarInstances.hasOwnProperty(name)) {
+                        return scrollbarInstances[name];
+                    }
+
+                    Object.keys(DEFAULT_OPTIONS).forEach((prop) => {
+                        if (options[prop] === undefined) {
+                            options[prop] = DEFAULT_OPTIONS[prop];
+                        }
+                    });
+
+                    let instance = scrollbarInstances[name] = Scrollbar.init(elem, options);
+
+                    if (deferreds.hasOwnProperty(name)) {
+                        deferreds[name].resolve(instance);
+                    }
+
+                    return instance;
+                }
+
+                /**
+                 * @method
+                 * Destroy scrollbar instance
+                 *
+                 * @param {String} name: scrollbar name
+                 */
+                destroyInstance(name) {
+                    let instance = scrollbarInstances[name];
+
+                    if (instance) {
+                        instance.destroy();
+                        delete scrollbarInstances[name];
+                        delete deferreds[name];
+                    }
+                }
             }
 
-            let deferred = deferreds[name] = deferreds[name] || $q.defer();
-
-            return deferred.promise;
-        }
-
-        /**
-         * @method
-         * Create scrollbar instance
-         *
-         * @param {String} name: scrollbar name
-         * @param {Element} elem: container element
-         * @param {Object} options: as is explained in scrollbar constructor
-         *
-         * @return {Scrollbar} scrollbar instance
-         */
-        createInstance(name, elem, options) {
-            const { scrollbarInstances, deferreds } = this;
-
-            if (scrollbarInstances.hasOwnProperty(name)) {
-                return scrollbarInstances[name];
-            }
-
-            let instance = scrollbarInstances[name] = Scrollbar.init(elem, options);
-
-            if (deferreds.hasOwnProperty(name)) {
-                deferreds[name].resolve(instance);
-            }
-
-            return instance;
-        }
-
-        /**
-         * @method
-         * Destroy scrollbar instance
-         *
-         * @param {String} name: scrollbar name
-         */
-        destroyInstance(name) {
-            let { scrollbarInstances, deferreds } = this;
-            let instance = scrollbarInstances[name];
-
-            if (instance) {
-                instance.destroy();
-                delete scrollbarInstances[name];
-                delete deferreds[name];
-            }
-        }
+            return new ScrollbarService();
+        }]
     })
     .directive('scrollbar', ['ScrollbarService', (ScrollbarService) => {
         return {
