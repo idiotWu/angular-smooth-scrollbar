@@ -27,7 +27,7 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
     this.setDefaultOptions = function () {
         var opt = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-        return Object.assign(DEFAULT_OPTIONS, opt);
+        return angular.extend(DEFAULT_OPTIONS, opt);
     };
 
     var id = 0;
