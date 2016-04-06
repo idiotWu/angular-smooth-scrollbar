@@ -11,14 +11,15 @@
 
 'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.version).provider('ScrollbarService', function ScrollbarServiceProvider() {
     var DEFAULT_OPTIONS = {
         speed: 1,
-        fricton: 10
+        fricton: 10,
+        ignoreEvents: []
     };
 
     var scrollbarInstances = {};
@@ -33,7 +34,7 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
     var id = 0;
 
     this.$get = ['$q', function ($q) {
-        var ScrollbarService = (function () {
+        var ScrollbarService = function () {
             function ScrollbarService() {
                 _classCallCheck(this, ScrollbarService);
 
@@ -46,6 +47,7 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
              *
              * @return {String}
              */
+
 
             _createClass(ScrollbarService, [{
                 key: 'generateName',
@@ -101,6 +103,8 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
                         }
                     });
 
+                    console.log(options);
+
                     var instance = scrollbarInstances[name] = Scrollbar.init(elem, options);
 
                     if (deferreds.hasOwnProperty(name)) {
@@ -131,7 +135,7 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
             }]);
 
             return ScrollbarService;
-        })();
+        }();
 
         return new ScrollbarService();
     }];
@@ -141,16 +145,20 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
         transclude: true,
         scope: {
             speed: '@',
-            fricton: '@'
+            fricton: '@',
+            ignoreEvents: '='
         },
         link: function link(scope, elem, attrs, ctrl, transclude) {
             var speed = scope.speed;
             var fricton = scope.fricton;
+            var ignoreEvents = scope.ignoreEvents;
 
             var name = attrs.scrollbar || attrs.name || ScrollbarService.generateName();
 
+            console.log(ignoreEvents);
+
             var scrollbar = ScrollbarService.createInstance(name, elem[0], {
-                speed: speed, fricton: fricton
+                speed: speed, fricton: fricton, ignoreEvents: ignoreEvents
             });
 
             var original = {
