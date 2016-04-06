@@ -3,7 +3,8 @@ angular.module('SmoothScrollbar', [])
     .provider('ScrollbarService', function ScrollbarServiceProvider() {
         const DEFAULT_OPTIONS = {
             speed: 1,
-            fricton: 10
+            fricton: 10,
+            ignoreEvents: []
         };
 
         const scrollbarInstances = {};
@@ -73,6 +74,8 @@ angular.module('SmoothScrollbar', [])
                         }
                     });
 
+                    console.log(options)
+
                     let instance = scrollbarInstances[name] = Scrollbar.init(elem, options);
 
                     if (deferreds.hasOwnProperty(name)) {
@@ -108,14 +111,17 @@ angular.module('SmoothScrollbar', [])
             transclude: true,
             scope: {
                 speed: '@',
-                fricton: '@'
+                fricton: '@',
+                ignoreEvents: '='
             },
             link(scope, elem, attrs, ctrl, transclude) {
-                const { speed, fricton } = scope;
+                const { speed, fricton, ignoreEvents } = scope;
                 const name = attrs.scrollbar || attrs.name || ScrollbarService.generateName();
 
+                console.log(ignoreEvents)
+
                 const scrollbar = ScrollbarService.createInstance(name, elem[0], {
-                    speed, fricton
+                    speed, fricton, ignoreEvents
                 });
 
                 let original = {
