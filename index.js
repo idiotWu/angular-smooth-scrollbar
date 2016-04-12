@@ -1,14 +1,6 @@
 angular.module('SmoothScrollbar', [])
     .constant('SCROLLBAR_VERSION', Scrollbar.version)
     .provider('ScrollbarService', function ScrollbarServiceProvider() {
-        const DEFAULT_OPTIONS = {
-            speed: 1,
-            friction: 10,
-            ignoreEvents: [],
-            thumbMinWidth: 20,
-            thumbMinHeight: 20
-        };
-
         const scrollbarInstances = {};
         const deferreds = {};
 
@@ -70,12 +62,6 @@ angular.module('SmoothScrollbar', [])
                         return scrollbarInstances[name];
                     }
 
-                    Object.keys(DEFAULT_OPTIONS).forEach((prop) => {
-                        if (options[prop] === undefined) {
-                            options[prop] = DEFAULT_OPTIONS[prop];
-                        }
-                    });
-
                     let instance = scrollbarInstances[name] = Scrollbar.init(elem, options);
 
                     if (deferreds.hasOwnProperty(name)) {
@@ -117,12 +103,9 @@ angular.module('SmoothScrollbar', [])
                 ignoreEvents: '='
             },
             link(scope, elem, attrs, ctrl, transclude) {
-                const { speed, friction, ignoreEvents, thumbMinWidth, thumbMinHeight } = scope;
                 const name = attrs.scrollbar || attrs.name || ScrollbarService.generateName();
 
-                const scrollbar = ScrollbarService.createInstance(name, elem[0], {
-                    speed, friction, ignoreEvents, thumbMinWidth, thumbMinHeight
-                });
+                const scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
 
                 let original = {
                     scrollTo: ::scrollbar.scrollTo,
