@@ -11,11 +11,14 @@
 
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.version).provider('ScrollbarService', function ScrollbarServiceProvider() {
+    var DEFAULT_OPTIONS = {};
     var scrollbarInstances = {};
     var deferreds = {};
 
@@ -91,7 +94,15 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
                         return scrollbarInstances[name];
                     }
 
-                    var instance = scrollbarInstances[name] = Scrollbar.init(elem, options);
+                    var res = {};
+
+                    Object.keys(options).forEach(function (prop) {
+                        if (options[prop] !== undefined) {
+                            res[prop] = options[prop];
+                        }
+                    });
+
+                    var instance = scrollbarInstances[name] = Scrollbar.init(elem, _extends({}, DEFAULT_OPTIONS, res));
 
                     if (deferreds.hasOwnProperty(name)) {
                         deferreds[name].resolve(instance);
