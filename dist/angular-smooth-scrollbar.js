@@ -18,8 +18,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.version).provider('ScrollbarService', function ScrollbarServiceProvider() {
     var DEFAULT_OPTIONS = {
         speed: 1,
-        fricton: 10,
-        ignoreEvents: []
+        friction: 10,
+        ignoreEvents: [],
+        thumbMinWidth: 20,
+        thumbMinHeight: 20
     };
 
     var scrollbarInstances = {};
@@ -103,8 +105,6 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
                         }
                     });
 
-                    console.log(options);
-
                     var instance = scrollbarInstances[name] = Scrollbar.init(elem, options);
 
                     if (deferreds.hasOwnProperty(name)) {
@@ -145,20 +145,22 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
         transclude: true,
         scope: {
             speed: '@',
-            fricton: '@',
+            friction: '@',
+            thumbMinWidth: '@',
+            thumbMinHeight: '@',
             ignoreEvents: '='
         },
         link: function link(scope, elem, attrs, ctrl, transclude) {
             var speed = scope.speed;
-            var fricton = scope.fricton;
+            var friction = scope.friction;
             var ignoreEvents = scope.ignoreEvents;
+            var thumbMinWidth = scope.thumbMinWidth;
+            var thumbMinHeight = scope.thumbMinHeight;
 
             var name = attrs.scrollbar || attrs.name || ScrollbarService.generateName();
 
-            console.log(ignoreEvents);
-
             var scrollbar = ScrollbarService.createInstance(name, elem[0], {
-                speed: speed, fricton: fricton, ignoreEvents: ignoreEvents
+                speed: speed, friction: friction, ignoreEvents: ignoreEvents, thumbMinWidth: thumbMinWidth, thumbMinHeight: thumbMinHeight
             });
 
             var original = {
