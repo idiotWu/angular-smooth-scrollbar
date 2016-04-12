@@ -16,14 +16,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.version).provider('ScrollbarService', function ScrollbarServiceProvider() {
-    var DEFAULT_OPTIONS = {
-        speed: 1,
-        friction: 10,
-        ignoreEvents: [],
-        thumbMinWidth: 20,
-        thumbMinHeight: 20
-    };
-
     var scrollbarInstances = {};
     var deferreds = {};
 
@@ -99,12 +91,6 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
                         return scrollbarInstances[name];
                     }
 
-                    Object.keys(DEFAULT_OPTIONS).forEach(function (prop) {
-                        if (options[prop] === undefined) {
-                            options[prop] = DEFAULT_OPTIONS[prop];
-                        }
-                    });
-
                     var instance = scrollbarInstances[name] = Scrollbar.init(elem, options);
 
                     if (deferreds.hasOwnProperty(name)) {
@@ -151,17 +137,9 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
             ignoreEvents: '='
         },
         link: function link(scope, elem, attrs, ctrl, transclude) {
-            var speed = scope.speed;
-            var friction = scope.friction;
-            var ignoreEvents = scope.ignoreEvents;
-            var thumbMinWidth = scope.thumbMinWidth;
-            var thumbMinHeight = scope.thumbMinHeight;
-
             var name = attrs.scrollbar || attrs.name || ScrollbarService.generateName();
 
-            var scrollbar = ScrollbarService.createInstance(name, elem[0], {
-                speed: speed, friction: friction, ignoreEvents: ignoreEvents, thumbMinWidth: thumbMinWidth, thumbMinHeight: thumbMinHeight
-            });
+            var scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
 
             var original = {
                 scrollTo: scrollbar.scrollTo.bind(scrollbar),
