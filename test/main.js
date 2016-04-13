@@ -1,9 +1,13 @@
 (function(angular) {
     'use strict';
 
-    var app = angular.module('demo', ['SmoothScrollbar']);
-
-    app.controller('GetDataCtrl', function($scope, $timeout, ScrollbarService) {
+    angular.module('demo', ['SmoothScrollbar'])
+        .config(function(ScrollbarServiceProvider) {
+            ScrollbarServiceProvider.setDefaultOptions({
+                continuousScrolling: true
+            });
+        })
+        .controller('GetDataCtrl', function($scope, $timeout, ScrollbarService) {
         $scope.offset = {
             x: 0,
             y: 0
