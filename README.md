@@ -75,9 +75,10 @@ bower install angular-smooth-scrollbar --save
 | friction | Number | 10 | Scrolling friction, a percentage value within (1, 100). |
 | thumbMinWidth | Number | 20 | Minimal size for horizontal thumb. |
 | thumbMinHeight | Number | 20 | Minimal size for vertical thumb. |
+| continuousScrolling | Boolean | false | Whether allow upper scrollable content to continue scrolling when current scrollbar reaches edge. |
 | ignoreEvents | Array | [] | A list of events names that are ignored, regex rules are supported. Details [here](https://github.com/idiotWu/smooth-scrollbar/wiki/Options-Field). |
 
-Confusing with the option field? Try edit tool [here](http://idiotwu.github.io/smooth-scrollbar/)!
+**Confusing with the option field? Try edit tool [here](http://idiotwu.github.io/smooth-scrollbar/)!**
 
 ## ScrollbarServiceProvider
 
