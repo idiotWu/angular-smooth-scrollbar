@@ -11,128 +11,149 @@
 
 'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _class, _temp;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-angular.module('SmoothScrollbar', []).service('ScrollbarService', (_temp = _class = (function () {
-    function ScrollbarService($q) {
-        _classCallCheck(this, ScrollbarService);
+angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.version).provider('ScrollbarService', function ScrollbarServiceProvider() {
+    var DEFAULT_OPTIONS = {};
+    var scrollbarInstances = {};
+    var deferreds = {};
 
-        this.scrollbarInstances = {};
-        this.deferreds = {};
-        this.$q = $q;
-    }
+    this.setDefaultOptions = function () {
+        var opt = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-    /**
-     * @method
-     * Get scrollbar instance
-     * If instance isn't existed,
-     * callback wiil be invoked after instance is created
-     *
-     * @param {String} name: scrollbar name
-     */
+        return angular.extend(DEFAULT_OPTIONS, opt);
+    };
 
-    _createClass(ScrollbarService, [{
-        key: 'getInstance',
-        value: function getInstance(name) {
-            var scrollbarInstances = this.scrollbarInstances;
-            var deferreds = this.deferreds;
-            var $q = this.$q;
+    var id = 0;
 
-            if (scrollbarInstances.hasOwnProperty(name)) {
-                return ($q.resolve || $q.when)(scrollbarInstances[name]);
+    this.$get = ['$q', function ($q) {
+        var ScrollbarService = function () {
+            function ScrollbarService() {
+                _classCallCheck(this, ScrollbarService);
+
+                this.id = 0;
             }
 
-            var deferred = deferreds[name] = deferreds[name] || $q.defer();
+            /**
+             * @method
+             * Generate a scrollbar name with timestamp + id
+             *
+             * @return {String}
+             */
 
-            return deferred.promise;
-        }
 
-        /**
-         * @method
-         * Create scrollbar instance
-         *
-         * @param {String} name: scrollbar name
-         * @param {Element} elem: container element
-         * @param {Object} options: as is explained in scrollbar constructor
-         *
-         * @return {Scrollbar} scrollbar instance
-         */
+            _createClass(ScrollbarService, [{
+                key: 'generateName',
+                value: function generateName() {
+                    this.id++;
+                    return Date.now().toString(32) + '$' + this.id;
+                }
 
-    }, {
-        key: 'createInstance',
-        value: function createInstance(name, elem, options) {
-            var scrollbarInstances = this.scrollbarInstances;
-            var deferreds = this.deferreds;
+                /**
+                 * @method
+                 * Get scrollbar instance
+                 * If instance isn't existed,
+                 * callback wiil be invoked after instance is created
+                 *
+                 * @param {String} name: scrollbar name
+                 *
+                 * @return {Promise} resolved with scrollbar<Scrollbar>
+                 */
 
-            if (scrollbarInstances.hasOwnProperty(name)) {
-                return scrollbarInstances[name];
-            }
+            }, {
+                key: 'getInstance',
+                value: function getInstance(name) {
+                    var deferred = deferreds[name] = deferreds[name] || $q.defer();
 
-            var instance = scrollbarInstances[name] = new Scrollbar(elem, options);
+                    if (scrollbarInstances.hasOwnProperty(name)) {
+                        deferred.resolve(scrollbarInstances[name]);
+                    }
 
-            if (deferreds.hasOwnProperty(name)) {
-                deferreds[name].resolve(instance);
-            }
+                    return deferred.promise;
+                }
 
-            return instance;
-        }
+                /**
+                 * @method
+                 * Create scrollbar instance
+                 *
+                 * @param {String} name: scrollbar name
+                 * @param {Element} elem: container element
+                 * @param {Object} options: as is explained in scrollbar constructor
+                 *
+                 * @return {Scrollbar} scrollbar instance
+                 */
 
-        /**
-         * @method
-         * Destroy scrollbar instance
-         *
-         * @param {String} name: scrollbar name
-         */
+            }, {
+                key: 'createInstance',
+                value: function createInstance(name, elem, options) {
+                    if (scrollbarInstances.hasOwnProperty(name)) {
+                        return scrollbarInstances[name];
+                    }
 
-    }, {
-        key: 'destroyInstance',
-        value: function destroyInstance(name) {
-            var scrollbarInstances = this.scrollbarInstances;
-            var deferreds = this.deferreds;
+                    var res = {};
 
-            var instance = scrollbarInstances[name];
+                    Object.keys(options).forEach(function (prop) {
+                        if (options[prop] !== undefined) {
+                            res[prop] = options[prop];
+                        }
+                    });
 
-            if (instance) {
-                instance.destroy();
-                delete scrollbarInstances[name];
-                delete deferreds[name];
-            }
-        }
-    }]);
+                    var instance = scrollbarInstances[name] = Scrollbar.init(elem, _extends({}, DEFAULT_OPTIONS, res));
 
-    return ScrollbarService;
-})(), _class.$inject = ['$q'], _temp)).directive('scrollbar', ['ScrollbarService', function (ScrollbarService) {
+                    if (deferreds.hasOwnProperty(name)) {
+                        deferreds[name].resolve(instance);
+                    }
+
+                    return instance;
+                }
+
+                /**
+                 * @method
+                 * Destroy scrollbar instance
+                 *
+                 * @param {String} name: scrollbar name
+                 */
+
+            }, {
+                key: 'destroyInstance',
+                value: function destroyInstance(name) {
+                    var instance = scrollbarInstances[name];
+
+                    if (instance) {
+                        instance.destroy();
+                        delete scrollbarInstances[name];
+                        delete deferreds[name];
+                    }
+                }
+            }]);
+
+            return ScrollbarService;
+        }();
+
+        return new ScrollbarService();
+    }];
+}).directive('scrollbar', ['ScrollbarService', function (ScrollbarService) {
     return {
         restrict: 'AE',
         transclude: true,
-        template: '\n                <article class="scroll-content" ng-transclude></article>\n                <aside class="scrollbar-track scrollbar-track-x">\n                    <div class="scrollbar-thumb scrollbar-thumb-x"></div>\n                </aside>\n                <aside class="scrollbar-track scrollbar-track-y">\n                    <div class="scrollbar-thumb scrollbar-thumb-y"></div>\n                </aside>\n            ',
         scope: {
             speed: '@',
-            stepLength: '@',
-            easingDuration: '@',
-            easingCurve: '@'
+            friction: '@',
+            thumbMinWidth: '@',
+            thumbMinHeight: '@',
+            continuousScrolling: '=',
+            ignoreEvents: '='
         },
-        link: function link(scope, elem, attrs) {
-            var speed = scope.speed;
-            var stepLength = scope.stepLength;
-            var easingDuration = scope.easingDuration;
-            var easingCurve = scope.easingCurve;
+        link: function link(scope, elem, attrs, ctrl, transclude) {
+            var name = attrs.scrollbar || attrs.name || ScrollbarService.generateName();
 
-            var name = attrs.scrollbar || attrs.name || Date.now().toString(32);
-
-            var scrollbar = ScrollbarService.createInstance(name, elem[0], {
-                speed: speed,
-                stepLength: stepLength,
-                easingDuration: easingDuration,
-                easingCurve: easingCurve
-            });
+            var scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
 
             var original = {
-                update: scrollbar.update.bind(scrollbar),
                 scrollTo: scrollbar.scrollTo.bind(scrollbar),
                 addListener: scrollbar.addListener.bind(scrollbar),
                 infiniteScroll: scrollbar.infiniteScroll.bind(scrollbar)
@@ -145,10 +166,6 @@ angular.module('SmoothScrollbar', []).service('ScrollbarService', (_temp = _clas
                     cb.apply(undefined, arguments);
                     scope.$apply();
                 };
-            };
-
-            scrollbar.update = function (cb) {
-                original.update(applyChange(cb));
             };
 
             scrollbar.scrollTo = function (x, y, duration, cb) {
@@ -170,6 +187,12 @@ angular.module('SmoothScrollbar', []).service('ScrollbarService', (_temp = _clas
             scope.$on('$destroy', function () {
                 ScrollbarService.destroyInstance(name);
             });
+
+            var $scrollContent = angular.element(scrollbar.targets.content);
+
+            transclude(function (clones) {
+                $scrollContent.append(clones);
+            }, $scrollContent);
         }
     };
 }]);
