@@ -112,6 +112,7 @@ angular.module('SmoothScrollbar', [])
                 friction: '@',
                 thumbMinWidth: '@',
                 thumbMinHeight: '@',
+                continuousScrolling: '=',
                 ignoreEvents: '='
             },
             link(scope, elem, attrs, ctrl, transclude) {
