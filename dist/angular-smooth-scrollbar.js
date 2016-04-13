@@ -145,6 +145,7 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
             friction: '@',
             thumbMinWidth: '@',
             thumbMinHeight: '@',
+            continuousScrolling: '=',
             ignoreEvents: '='
         },
         link: function link(scope, elem, attrs, ctrl, transclude) {
