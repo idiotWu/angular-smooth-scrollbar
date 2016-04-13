@@ -77,6 +77,8 @@ let __touchHandler = function() {
 
         if (!lastTouchPos) return;
 
+        evt.preventDefault();
+
         let duration = Date.now() - lastTouchTime;
         let { x: lastX, y: lastY } = lastTouchPos;
         let { x: curX, y: curY } = lastTouchPos = getPosition(evt);
@@ -88,12 +90,6 @@ let __touchHandler = function() {
 
         let destX = pickInRange(lastX - curX + offset.x, 0, limit.x);
         let destY = pickInRange(lastY - curY + offset.y, 0, limit.y);
-
-        if (Math.abs(destX - offset.x) < 1 && Math.abs(destY - offset.y) < 1) {
-            return this.__updateThrottle();
-        }
-
-        evt.preventDefault();
 
         this.setPosition(destX, destY);
     });
@@ -107,7 +103,10 @@ let __touchHandler = function() {
 
         let { x, y } = moveVelocity;
 
-        this.__addMovement(x * EASING_DURATION, y * EASING_DURATION);
+        this.__setMovement(
+            x ? x / Math.abs(x) * Math.sqrt(Math.abs(x) * 1e3) * 20 : 0,
+            y ? y / Math.abs(y) * Math.sqrt(Math.abs(y) * 1e3) * 20 : 0
+        );
 
         moveVelocity.x = moveVelocity.y = 0;
     });

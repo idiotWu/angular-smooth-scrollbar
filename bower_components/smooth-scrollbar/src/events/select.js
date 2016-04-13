@@ -24,28 +24,25 @@
     let scroll = ({ x, y }) => {
         if (!x && !y) return;
 
-        this.__addMovement(x, y);
+        this.__setMovement(x, y);
 
-        animation = setTimeout(() => {
+        animation = requestAnimationFrame(() => {
             scroll({ x, y });
-        }, 100);
+        });
     };
 
     let setSelect = (value = '') => {
         setStyle(container, {
-            '-webkit-user-select': value,
-               '-moz-user-select': value,
-                '-ms-user-select': value,
-                    'user-select': value
+            '-user-select': value
         });
     };
 
     this.__addEvent(window, 'mousemove', (evt) => {
         if (!isSelected) return;
 
-        clearTimeout(animation);
+        cancelAnimationFrame(animation);
 
-        const dir = this.__getOverflowDir(evt);
+        const dir = this.__getPointerTrend(evt);
 
         scroll(dir);
     });
@@ -55,15 +52,14 @@
             return setSelect('none');
         }
 
-        clearTimeout(animation);
-        setSelect('auto');
+        cancelAnimationFrame(animation);
 
         this.__updateBounding();
         isSelected = true;
     });
 
     this.__addEvent(window, 'mouseup blur', () => {
-        clearTimeout(animation);
+        cancelAnimationFrame(animation);
         setSelect();
 
         isSelected = false;

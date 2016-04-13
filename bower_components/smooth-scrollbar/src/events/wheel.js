@@ -4,7 +4,7 @@
  */
 
 import { SmoothScrollbar } from '../smooth_scrollbar';
-import { getDelta, pickInRange } from '../utils/index';
+import { getDelta } from '../utils/index';
 
 export { SmoothScrollbar };
 
@@ -23,25 +23,14 @@ const WHEEL_EVENT = 'onwheel' in window ? 'wheel' : 'mousewheel';
 let __wheelHandler = function() {
     const { container } = this.targets;
 
-    let lastUpdateTime = Date.now();
-
     this.__addEvent(container, WHEEL_EVENT, (evt) => {
-        if (evt.defaultPrevented) return;
-
-        const { offset, limit } = this;
-
-        const now = Date.now();
-        const delta = getDelta(evt);
-
-        let destX = pickInRange(delta.x + offset.x, 0, limit.x);
-        let destY = pickInRange(delta.y + offset.y, 0, limit.y);
-
-        if (destX === offset.x && destY === offset.y) {
-            return this.__updateThrottle();
-        }
+        if (this.__ignoreEvent(evt)) return;
 
         evt.preventDefault();
         evt.stopPropagation();
+
+        const { offset, limit } = this;
+        const delta = getDelta(evt);
 
         this.__addMovement(delta.x, delta.y);
     });

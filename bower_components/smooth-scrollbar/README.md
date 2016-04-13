@@ -18,7 +18,7 @@ Customize scrollbar in modern browsers with smooth scrolling experience.
 | Safari  | 8+      |
 | Android Browser | 4+ |
 | Chrome for Android | 32+ |
-| iOS Safarri | 7+ |
+| iOS Safari | 7+ |
 
 ## Install
 
@@ -65,7 +65,7 @@ Don't forget to include the stylesheet in your page:
 <link rel="stylesheet" href="dist/smooth-scrollbar.css">
 ```
 
-Here's three way to tell the plugin which element should be a smooth scrollbar:
+Here're three ways to tell the plugin which element should be a smooth scrollbar:
 
 1. As an element:
 
@@ -104,9 +104,12 @@ Or you can call `Scrollbar.init(elem, options)` to manually init the scrollbar.
 | parameter | type | default | description |
 | :--------: | :--: | :-----: | :----------: |
 | speed | Number | 1 | Scrolling speed scale.|
-| fricton | Number | 10 | Scrolling fricton, a percentage value within (1, 100) |
+| friction | Number | 10 | Scrolling friction, a percentage value within (1, 100). |
+| thumbMinWidth | Number | 20 | Minimal size for horizontal thumb. |
+| thumbMinHeight | Number | 20 | Minimal size for vertical thumb. |
+| ignoreEvents | Array | [] | A list of events names that are ignored, regex rules are supported. Details [here](https://github.com/idiotWu/smooth-scrollbar/wiki/Options-Field). |
 
-Confusing with the option field? Try editor tool [here](http://idiotwu.github.io/smooth-scrollbar/)!
+Confusing with the option field? Try edit tool [here](http://idiotwu.github.io/smooth-scrollbar/)!
 
 ## DOM Structure
 Following is the DOM structure that Scrollbar generated:
@@ -114,7 +117,7 @@ Following is the DOM structure that Scrollbar generated:
 ```html
 <scrollbar>
     <article class="scroll-content">
-        your content here
+        your contents here...
     </article>
     <aside class="scrollbar-track scrollbar-track-x">
         <div class="scrollbar-thumb scrollbar-thumb-x"></div>
@@ -142,13 +145,25 @@ Following is the DOM structure that Scrollbar generated:
 
 ### Instance
 
+#### Properties
+
+- [instance#targets](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancetargets)
+- [instance#offset](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instanceoffset)
+- [instance#limit](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancelimit)
+- [instance#scrollTop](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancescrolltop)
+- [instance#scrollLeft](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancescrollleft)
+
+#### Methods
+
 - [instance#update( [async] )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instanceupdate-async-)
 - [instance#getSize()](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancegetsize)
-- [instance#setPosition( x, y )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancesetposition-x-y-)
+- [instance#setPosition( x, y, [withoutCallbacks] )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancesetposition-x-y-withoutcallbacks-)
 - [instance#scrollTo( x, y, [duration], [callback] )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancescrollto-x-y-duration-callback-)
 - [instance#addListener( fn )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instanceaddlistener-fn-)
 - [instance#removeListener( fn )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instanceremovelistener-fn-)
 - [instance#infiniteScroll( callback, [threshold] )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instanceinfinitescroll-callback-threshold-)
+- [[instance#clearMovement()](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#clearMovement)]
+- [[instance#stop()](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#stop)]
 - [instance#destroy()](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancedestroy)
 - [instance#getContentElem()](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instancegetcontentelem)
 - [instance#showTrack( direction )](https://github.com/idiotWu/smooth-scrollbar/wiki/Instance-Methods#instanceshowtrack-direction-)
@@ -163,7 +178,29 @@ Details [here](https://github.com/idiotWu/smooth-scrollbar/wiki/Work-with-RubaXa
 - [angular-smooth-scrollbar](https://github.com/idiotWu/angular-smooth-scrollbar)
 - [react-smooth-scrollbar](https://github.com/idiotWu/react-smooth-scrollbar)
 
+## Todo
+
+- [ ] Overscroll effect.
+
 ## Changelog
+
+### 5.1.0
+
+- Add `#clearMovement` and `#stop` method.
+- Allow users to temporarily disable callbacks when invoke `#setPosition` method.
+
+### 5.0.0
+
+- **Breaking change**: rename `fricton` to `friction`.
+- Feature: minimal scrollbar thumb size.
+
+### 4.2.0
+
+- Add `ignoreEvents` support.
+
+### 4.1.0
+
+- Reduce movement at container's edge.
 
 ### 4.0.0
 
@@ -177,7 +214,7 @@ Details [here](https://github.com/idiotWu/smooth-scrollbar/wiki/Work-with-RubaXa
 ### 3.0.0
 
 - New easing algorithm.
-- Dependencies free!
+- Dependency free!
 
 ## License
 

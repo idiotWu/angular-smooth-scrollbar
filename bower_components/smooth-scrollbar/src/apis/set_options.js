@@ -4,7 +4,7 @@
  */
 
 import { pickInRange } from '../utils/';
-import { OPTION_LIMIT } from '../options';
+import { OPTION_LIMIT } from '../shared/';
 import { SmoothScrollbar } from '../smooth_scrollbar';
 
 export { SmoothScrollbar };
@@ -17,16 +17,13 @@ export { SmoothScrollbar };
  * @param {Object} options
  */
 SmoothScrollbar.prototype.setOptions = function(options = {}) {
+    let res = {};
+
     Object.keys(options).forEach((prop) => {
-        if (isNaN(parseFloat(options[prop]))) {
-            delete options[prop];
-            return;
-        }
+        if (!this.options.hasOwnProperty(prop) || options[prop] === undefined) return;
 
-        if (!OPTION_LIMIT.hasOwnProperty(prop)) return;
-
-        options[prop] = pickInRange(options[prop], ...OPTION_LIMIT[prop]);
+        res[prop] = options[prop];
     });
 
-    Object.assign(this.options, options);
+    Object.assign(this.options, res);
 };

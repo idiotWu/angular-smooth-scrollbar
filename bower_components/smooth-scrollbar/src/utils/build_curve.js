@@ -14,12 +14,14 @@
 export let buildCurve = (distance, duration) => {
     let res = [];
 
-    const t = Math.floor(duration / 1000 * 60);
+    if (duration <= 0) return res;
+
+    const t = Math.round(duration / 1000 * 60);
     const a = -distance / t**2;
     const b = -2 * a * t;
 
-    for (let i = 0; i <= t; i++) {
-        res.push(distance ? (a * i**2 + b * i) : 0);
+    for (let i = 0; i < t; i++) {
+        res.push(a * i**2 + b * i);
     }
 
     return res;

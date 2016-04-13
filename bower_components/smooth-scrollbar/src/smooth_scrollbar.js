@@ -3,13 +3,12 @@
  * @export {Class} SmoothScrollbar
  */
 
-import { DEFAULT_OPTIONS } from './options';
-import { sbList } from './shared/sb_list';
+import { sbList } from './shared/';
 import {
     debounce,
     findChild,
     setStyle
-} from './utils/index';
+} from './utils/';
 
 /**
  * @constructor
@@ -61,8 +60,13 @@ export class SmoothScrollbar {
             x: 0,
             y: 0
         })
-        .__readonly('size', this.getSize())
-        .__readonly('options', Object.assign({}, DEFAULT_OPTIONS));
+        .__readonly('thumbSize', {
+            x: 0,
+            y: 0,
+            realX: 0,
+            realY: 0
+        })
+        .__readonly('size', this.getSize());
 
         // non-enmurable properties
         Object.defineProperties(this, {
@@ -83,7 +87,21 @@ export class SmoothScrollbar {
             }
         });
 
-        this.setOptions(options);
+        // accessors
+        Object.defineProperties(this, {
+            scrollTop: {
+                get() {
+                    return this.offset.y;
+                }
+            },
+            scrollLeft: {
+                get() {
+                    return this.offset.x;
+                }
+            }
+        });
+
+        this.__initOptions(options);
         this.__initScrollbar();
     }
 }

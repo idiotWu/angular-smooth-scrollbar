@@ -8,20 +8,22 @@ import { SmoothScrollbar } from '../smooth_scrollbar';
 export { SmoothScrollbar };
 
 function nextTick(options, current, movement) {
-    const { fricton } = options;
+    const { friction } = options;
 
-    let q = fricton / 100;
-    let next = current + movement * q;
-    let remain = movement * (1 - q);
+    if (Math.abs(movement) < 1) {
+        let next = current + movement;
 
-    if (Math.abs(remain) < 1) {
-        remain = 0;
-        next = current > next ? Math.ceil(next) : Math.floor(next); // stop at integer position
+        return {
+            movement: 0,
+            position: current > next ? Math.ceil(next) : Math.floor(next)
+        };
     }
 
+    let q = 1 - friction / 100;
+
     return {
-        position: next,
-        movement: remain
+        movement: movement * q,
+        position: current + movement * (1 - q)
     };
 };
 
@@ -43,7 +45,7 @@ function __render() {
         this.setPosition(nextX.position, nextY.position);
     }
 
-    __timerID.scrollAnimation = requestAnimationFrame(this::__render);
+    __timerID.render = requestAnimationFrame(this::__render);
 
 };
 

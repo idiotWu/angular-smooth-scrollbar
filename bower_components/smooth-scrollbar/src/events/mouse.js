@@ -4,20 +4,9 @@
  */
 
 import { SmoothScrollbar } from '../smooth_scrollbar';
-import { getPosition, getTouchID, pickInRange } from '../utils/index';
+import { getPosition, getTouchID, pickInRange } from '../utils/';
 
 export { SmoothScrollbar };
-
-const TRACK_DIRECTION = {
-    x: [0, 1],
-    y: [1, 0]
-};
-
-let getTrackDir = (className) => {
-    let matches = className.match(/scrollbar\-(?:track|thumb)\-([xy])/);
-
-    return matches && matches[1];
-};
 
 /**
  * @method
@@ -27,43 +16,37 @@ let getTrackDir = (className) => {
  * @param {Object} option
  */
 let __mouseHandler = function() {
+    const { container } = this.targets;
     let isMouseDown, isMouseMove, startOffsetToThumb, startTrackDirection, containerRect;
-    let { container } = this.targets;
+
+    let getTrackDir = (className) => {
+        let matches = className.match(/scrollbar\-(?:track|thumb)\-([xy])/);
+
+        return matches && matches[1];
+    };
 
     this.__addEvent(container, 'click', (evt) => {
-        if (isMouseMove || !/track/.test(evt.target.className) || this.__ignoreEvent(evt)) return;
+        if (isMouseMove || !/scrollbar-track/.test(evt.target.className) || this.__ignoreEvent(evt)) return;
 
         let track = evt.target;
         let direction = getTrackDir(track.className);
         let rect = track.getBoundingClientRect();
         let clickPos = getPosition(evt);
+        let deltaLimit = this.__getDeltaLimit();
 
-        let { size, offset } = this;
+        const { size, offset, thumbSize } = this;
 
         if (direction === 'x') {
-            // use percentage value
-            let thumbSize = pickInRange(size.container.width / size.content.width, 0, 1);
-            let clickOffset = (clickPos.x - rect.left) / size.container.width;
-
-            return this.scrollTo(
-                (clickOffset - thumbSize / 2) * size.content.width,
-                offset.y,
-                1e3
-            );
+            let clickOffset = (clickPos.x - rect.left - thumbSize.realX / 2) / size.container.width;
+            this.movement.x = pickInRange(clickOffset * size.content.width - offset.x, ...deltaLimit.x);
+        } else {
+            let clickOffset = (clickPos.y - rect.top - thumbSize.realY / 2) / size.container.height;
+            this.movement.y = pickInRange(clickOffset * size.content.height - offset.y, ...deltaLimit.y);
         }
-
-        let thumbSize = pickInRange(size.container.height / size.content.height, 0, 1);
-        let clickOffset = (clickPos.y - rect.top) / size.container.height;
-
-        this.scrollTo(
-            offset.x,
-            (clickOffset - thumbSize / 2) * size.content.height,
-            1e3
-        );
     });
 
     this.__addEvent(container, 'mousedown', (evt) => {
-        if (!/thumb/.test(evt.target.className) || this.__ignoreEvent(evt)) return;
+        if (!/scrollbar-thumb/.test(evt.target.className) || this.__ignoreEvent(evt)) return;
         isMouseDown = true;
 
         let cursorPos = getPosition(evt);

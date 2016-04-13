@@ -1,6 +1,6 @@
 {
   "name": "smooth-scrollbar",
-  "version": "4.0.1",
+  "version": "5.1.0",
   "authors": [
     "Dolphin Wood <dolphin.w.e@gmail.com>"
   ],
@@ -28,14 +28,14 @@
     "build",
     "tests"
   ],
-  "_release": "4.0.1",
+  "_release": "5.1.0",
   "_resolution": {
     "type": "version",
-    "tag": "v4.0.1",
-    "commit": "636ba670fd954b3a0c261a1c006c789e422537b4"
+    "tag": "v5.1.0",
+    "commit": "5bb022357ed1045faed468c0f3ef6608002983fa"
   },
-  "_source": "git://github.com/idiotWu/smooth-scrollbar.git",
-  "_target": "4.0.1",
+  "_source": "https://github.com/idiotWu/smooth-scrollbar.git",
+  "_target": "^5.1.0",
   "_originalSource": "smooth-scrollbar",
   "_direct": true
 }
