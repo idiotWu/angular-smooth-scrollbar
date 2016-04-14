@@ -70,7 +70,6 @@ bower install angular-smooth-scrollbar --save
 ### Available Options
 
 | parameter | type | default | description |
-| parameter | type | default | description |
 | :--------: | :--: | :-----: | :----------: |
 | speed | Number | 1 | Scrolling speed scale.|
 | friction | Number | 10 | Scrolling friction, a percentage value within (1, 100). |
