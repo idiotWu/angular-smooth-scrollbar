@@ -115,6 +115,10 @@ angular.module('SmoothScrollbar', [])
                 ignoreEvents: '='
             },
             link(scope, elem, attrs, ctrl, transclude) {
+                if (attrs.continuousScrolling === 'auto') {
+                    scope.continuousScrolling = 'auto';
+                }
+
                 const name = attrs.scrollbar || attrs.name || ScrollbarService.generateName();
 
                 const scrollbar = ScrollbarService.createInstance(name, elem[0], scope);
