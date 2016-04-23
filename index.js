@@ -111,6 +111,7 @@ angular.module('SmoothScrollbar', [])
                 speed: '@',
                 friction: '@',
                 thumbMinSize: '@',
+                renderByPixels: '=',
                 continuousScrolling: '=',
                 ignoreEvents: '='
             },
