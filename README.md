@@ -53,7 +53,7 @@ bower install angular-smooth-scrollbar --save
     - As element:
 
         ```html
-        <scrollbar name="scrollbarName">
+        <scrollbar name="scrollbar_name">
             ...
         </scrollbar>
         ```
@@ -61,7 +61,7 @@ bower install angular-smooth-scrollbar --save
     - As attribute:
 
         ```html
-        <section scrollbar="scrollbarName">
+        <section scrollbar="scrollbar_name">
             ...
         </section>
         ```
@@ -70,7 +70,8 @@ bower install angular-smooth-scrollbar --save
 
 | parameter | type | default | description |
 | :--------: | :--: | :-----: | :---------- |
-| speed | `Number=` | 1 | Scrolling speed scale.|
+| name | `String@` | N/A | Naming current scrollbar. |
+| speed | `Number=` | 1 | Scrolling speed scale. |
 | friction | `Number=` | 10 | Scrolling friction, a percentage value within (1, 100). |
 | thumbMinSize | `Number=` | 20 | Minimal size for scrollbar thumb. |
 | renderByPixels | `Boolean=` | true | Render scrolling by integer pixels, set to `true` to improve performance. |
