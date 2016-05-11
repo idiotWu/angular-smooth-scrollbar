@@ -141,9 +141,9 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
         restrict: 'AE',
         transclude: true,
         scope: {
-            speed: '@',
-            friction: '@',
-            thumbMinSize: '@',
+            speed: '=',
+            friction: '=',
+            thumbMinSize: '=',
             renderByPixels: '=',
             continuousScrolling: '='
         },
