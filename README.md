@@ -110,7 +110,7 @@ app.controller('MyCtrl', (ScrollbarService) => {
 });
 ```
 
-## ScrollbarService.generateName()
+### ScrollbarService.generateName()
 
 Return a timestamp string, this will be useful while trying naming scrollbars uniquely.
 
