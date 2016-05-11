@@ -97,7 +97,18 @@ Set default scrollbar options for your angular app.
 
 ## ScrollbarService
 
-By given scrollbar a name via attribute, you can access your scrollbar instances through `ScrollbarService`.
+By **given scrollbar a name via attribute**, you can access your scrollbar instances through `ScrollbarService`.
+
+```html
+    <scrollbar name="myScrollbar">...</scrollbar>
+```
+
+```javascript
+app.controller('MyCtrl', (ScrollbarService) => {
+    const myScrollbar = ScrollbarService.getInstance('myScrollbar');
+    ...
+});
+```
 
 ## ScrollbarService.generateName()
 
@@ -109,7 +120,7 @@ Get scrollbar instance by giving the name, and return a promise with instance.
 
 ### ScrollbarService.destroyInstance( name )
 
-Remove all event listeners on the named instance, but will not remove scrollbar from DOM.
+Destroy scrollbar with the given name.
 
 ## APIs
 
