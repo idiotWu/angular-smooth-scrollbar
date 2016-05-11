@@ -108,9 +108,9 @@ angular.module('SmoothScrollbar', [])
             restrict: 'AE',
             transclude: true,
             scope: {
-                speed: '@',
-                friction: '@',
-                thumbMinSize: '@',
+                speed: '=',
+                friction: '=',
+                thumbMinSize: '=',
                 renderByPixels: '=',
                 continuousScrolling: '='
             },
