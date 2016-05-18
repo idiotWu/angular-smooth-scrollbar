@@ -112,7 +112,9 @@ angular.module('SmoothScrollbar', [])
                 friction: '=',
                 thumbMinSize: '=',
                 renderByPixels: '=',
-                continuousScrolling: '='
+                continuousScrolling: '=',
+                overscrollEffect: '=',
+                overscrollEffectColor: '@'
             },
             link(scope, elem, attrs, ctrl, transclude) {
                 if (attrs.continuousScrolling === 'auto') {
