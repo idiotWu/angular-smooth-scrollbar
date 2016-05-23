@@ -145,6 +145,7 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
             friction: '=',
             thumbMinSize: '=',
             renderByPixels: '=',
+            alwaysShowTracks: '=',
             continuousScrolling: '=',
             overscrollEffect: '=',
             overscrollEffectColor: '@'
