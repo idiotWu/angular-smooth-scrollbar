@@ -70,15 +70,15 @@ bower install angular-smooth-scrollbar --save
 
 | parameter | type | default | description |
 | :--------: | :--: | :-----: | :---------- |
-| name | `String@` | N/A | Naming current scrollbar. |
-| speed | `Number=` | 1 | Scrolling speed scale. |
-| friction | `Number=` | 10 | Scrolling friction, a percentage value within (1, 100). |
-| thumbMinSize | `Number=` | 20 | Minimal size for scrollbar thumb. |
-| renderByPixels | `Boolean=` | true | Render scrolling by integer pixels, set to `true` to improve performance. |
-| alwaysShowTracks | `Boolean=` | false | Keep scrollbar tracks visible whether it's scrolling or not. |
-| continuousScrolling | `Boolean=`\|`String=` | 'auto' | Whether allow upper scrollable content to continue scrolling when current scrollbar reaches edge. **When set to 'auto', it will be enabled on nested scrollbars, and disabled on first-class scrollbars.** |
-| overscrollEffect | `Boolean=`\|`String=` | false | Experimental overscroll effect, `'bounce'` for iOS style effect and `'glow'` for Android style effect. **Be careful when you enable this feature!** |
-| overscrollEffectColor | `String@` | '#87ceeb' | Canvas paint color with 'glow' effect. |
+| name | `string@` | N/A | Naming current scrollbar. |
+| speed | `number=` | 1 | Scrolling speed scale. |
+| damping | `number=` | 0.1 | Delta reduce damping, a float value between (0, 1), the lower the value is, the more smooth the scrolling will be. |
+| thumbMinSize | `number=` | 20 | Minimal size for scrollbar thumb. |
+| renderByPixels | `boolean=` | true | Render scrolling by integer pixels, set to `true` to improve performance. |
+| alwaysShowTracks | `boolean=` | false | Keep scrollbar tracks visible whether it's scrolling or not. |
+| continuousScrolling | `boolean=`\|`string=` | 'auto' | Whether allow upper scrollable content to continue scrolling when current scrollbar reaches edge. **When set to 'auto', it will be enabled on nested scrollbars, and disabled on first-class scrollbars.** |
+| overscrollEffect | `boolean=`\|`string=` | false | Experimental overscroll effect, `'bounce'` for iOS style effect and `'glow'` for Android style effect. **Be careful when you enable this feature!** |
+| overscrollEffectColor | `string@` | '#87ceeb' | Canvas paint color with 'glow' effect. |
 
 
 **Confusing with the option field? Try edit tool [here](http://idiotwu.github.io/smooth-scrollbar/)!**
