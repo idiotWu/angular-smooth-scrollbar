@@ -109,7 +109,7 @@ angular.module('SmoothScrollbar', [])
             transclude: true,
             scope: {
                 speed: '=',
-                friction: '=',
+                damping: '=',
                 thumbMinSize: '=',
                 renderByPixels: '=',
                 alwaysShowTracks: '=',
