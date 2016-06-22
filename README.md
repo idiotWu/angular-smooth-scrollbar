@@ -74,6 +74,7 @@ bower install angular-smooth-scrollbar --save
 | speed | `number=` | 1 | Scrolling speed scale. |
 | damping | `number=` | 0.1 | Delta reduce damping, a float value between (0, 1), the lower the value is, the more smooth the scrolling will be. |
 | thumbMinSize | `number=` | 20 | Minimal size for scrollbar thumb. |
+| syncCallbacks | Boolean | false | Execute listeners in synchronous or asynchronous. |
 | renderByPixels | `boolean=` | true | Render scrolling by integer pixels, set to `true` to improve performance. |
 | alwaysShowTracks | `boolean=` | false | Keep scrollbar tracks visible whether it's scrolling or not. |
 | continuousScrolling | `boolean=`\|`string=` | 'auto' | Whether allow upper scrollable content to continue scrolling when current scrollbar reaches edge. **When set to 'auto', it will be enabled on nested scrollbars, and disabled on first-class scrollbars.** |
