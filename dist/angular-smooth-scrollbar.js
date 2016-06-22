@@ -144,6 +144,7 @@ angular.module('SmoothScrollbar', []).constant('SCROLLBAR_VERSION', Scrollbar.ve
             speed: '=',
             damping: '=',
             thumbMinSize: '=',
+            syncCallbacks: '=',
             renderByPixels: '=',
             alwaysShowTracks: '=',
             continuousScrolling: '=',
