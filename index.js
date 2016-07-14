@@ -93,7 +93,7 @@ angular.module('SmoothScrollbar', [])
                     let instance = scrollbarInstances[name];
 
                     if (instance) {
-                        instance.destroy();
+                        instance.destroy(true);
                         delete scrollbarInstances[name];
                         delete deferreds[name];
                     }
