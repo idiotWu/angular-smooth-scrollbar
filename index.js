@@ -116,6 +116,7 @@ angular.module('SmoothScrollbar', [])
                 alwaysShowTracks: '=',
                 continuousScrolling: '=',
                 overscrollEffect: '=',
+                overscrollDamping: '=',
                 overscrollEffectColor: '@'
             },
             link(scope, elem, attrs, ctrl, transclude) {
