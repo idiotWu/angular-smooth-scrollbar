@@ -80,7 +80,7 @@ bower install angular-smooth-scrollbar --save
 | continuousScrolling | `boolean=`\|`string=` | 'auto' | Whether allow upper scrollable content to continue scrolling when current scrollbar reaches edge. **When set to 'auto', it will be enabled on nested scrollbars, and disabled on first-class scrollbars.** |
 | overscrollEffect | `boolean=`\|`string=` | false | Experimental overscroll effect, `'bounce'` for iOS style effect and `'glow'` for Android style effect. **Be careful when you enable this feature!** |
 | overscrollEffectColor | `string@` | '#87ceeb' | Canvas paint color with 'glow' effect. |
-
+| overscrollDamping | Number | 0.2 | The same as `damping`, but for overscrolling. |
 
 **Confusing with the option field? Try edit tool [here](http://idiotwu.github.io/smooth-scrollbar/)!**
 
